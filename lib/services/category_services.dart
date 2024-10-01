@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:project_rj_admin_panel/utils/text_controllers.dart';
 import 'package:provider/provider.dart';
 
 import '../data/models/category_model.dart';
@@ -8,6 +9,7 @@ import '../data/models/storage_image_model.dart';
 import '../repository/common.dart';
 import '../utils/common_methods.dart';
 import '../view/providers/category_provider.dart';
+import '../view/providers/common_provider.dart';
 import '../view/providers/pick_image_provider.dart';
 
 class CategoryServices {
@@ -74,13 +76,71 @@ class CategoryServices {
       _contextRefreshCategory(context);
     });
   }
-  void _contextRefreshCategory(BuildContext context) {
+
+  clearFields(BuildContext context){
     Navigator.pop(context);
     context.read<PickImageProvider>().fileSetToNull();
+    popupCategoryNameController.text="";
+    popupSub_CategoryNameController.text="";
+    context.read<CategoryProvider>().clearCategoryList();
+  }
+
+  void _contextRefreshCategory(BuildContext context) {
+    clearFields(context);
     context.read<CategoryProvider>().getCategoryProvider();
+    context.read<CommonProvider>().getCategoryNames();
   }
 
 
+  checkAndUpdateCategory(String name, BuildContext context, CategoryModel? model) async {
+    final subCategoryList = context.read<CategoryProvider>().subCategoryChip;
 
+    if (validateFormUpdate() && uintImage != null) {
+      print("addCategoryDetails");
+      StorageImageModel imageData = await getFirebaseStorageImageUrl(uintImage, 'categories');
+      print("Update With imageUrl EDIT");
+      await updateCategoryUNI(name, subCategoryList, imageData, context,model);
+    } else if (validateFormUpdate() &&
+        context.read<PickImageProvider>().imageFile == null) {
+      print("Update With ${model!.fireID} EDIT");
+      final catModel = CategoryModel(
+          imageRefPath: model.imageRefPath,
+          id: model.id,
+          status: model.status,
+          categoryName: name,
+          subCategories: subCategoryList,
+          image: model.image,
+          fireID: model.fireID);
+      await context
+          .read<CategoryProvider>()
+          .updateCategoryDetails(catModel, model.fireID)
+          .then((value) {
+        context.read<PickImageProvider>().imageFile != null;
+        _contextRefreshCategory(context);
+      });
+    }
+  }
 
+  Future<void> updateCategoryUNI(String name, List<String> subCtaegoryList,
+      StorageImageModel imgData, BuildContext context,CategoryModel? model) async {
+    final catModel = CategoryModel(
+        imageRefPath: imgData.storageRefPath,
+        id: model!.id,
+        status: model.status,
+        categoryName: name,
+        subCategories: subCtaegoryList,
+        image: imgData.downloadUrl,
+        fireID: model.fireID);
+    await context
+        .read<CategoryProvider>()
+        .updateCategoryDetails(catModel, model.fireID)
+        .then((value) {
+      context.read<PickImageProvider>().imageFile != null;
+      _contextRefreshCategory(context);
+    });
+  }
+  onDeletePress(BuildContext context, String fireID,) {
+    context.read<CategoryProvider>().deleteCategoryDetail(fireID);
+    context.read<CommonProvider>().getCategoryNames();
+  }
 }

@@ -32,7 +32,6 @@ class CategoryProvider extends ChangeNotifier{
 
   clearCategoryList(){
     _subCategoryChip.clear();
-    subCategoryChip.clear();
     print("$_subCategoryChip$subCategoryChip");
   }
 

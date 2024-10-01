@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_rj_admin_panel/data/models/coupon_model.dart';
+import 'package:project_rj_admin_panel/services/coupon_services.dart';
 import 'package:project_rj_admin_panel/view/providers/coupon_provider.dart';
 import 'package:project_rj_admin_panel/view/widgets/simple_text_label.dart';
 import 'package:provider/provider.dart';
@@ -10,22 +11,16 @@ import '../../../utils/text_controllers.dart';
 import '../custom_elevated_button.dart';
 
 class PopupCouponContent extends StatelessWidget {
-  final String title;
 
-  final _formKey = GlobalKey<FormState>();
-  CouponModel? couponModel;
+  final String title;
+  final CouponServices couponServices = CouponServices();
 
   PopupCouponContent({
     super.key,
     required this.title,
   });
 
-  validate() {
-    if (_formKey.currentState!.validate()) {
-      return true;
-    }
-    return false;
-  }
+
 
   void setValuesToEdit(BuildContext context) {}
 
@@ -45,7 +40,7 @@ class PopupCouponContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Elev_Button(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => couponServices.clearFields(context),
                 borderColor: primaryColor,
                 buttonBackground: secondaryColor,
                 textColor: primaryColor,
@@ -53,12 +48,7 @@ class PopupCouponContent extends StatelessWidget {
               ),
               Elev_Button(
                 onPressed: () {
-                  double discount = 0.0;
-                  try {
-                    discount = double.parse(popupDiscountController.text);
-                  } catch (e) {
-                    print("Exception Discount Coupon Popup${e.toString()}");
-                  }
+                  double discount = couponServices.getDiscountInDouble(popupDiscountController.text);
                   //assert(discount is double);
                   final model = CouponModel(
                     firebaseCollectionID: "",
@@ -67,7 +57,7 @@ class PopupCouponContent extends StatelessWidget {
                     discount: discount,
                     status: "Available",
                   );
-                  checkPopupFields(model, context);
+                  couponServices.checkCouponAdd(model, context);
                 },
                 buttonBackground: primaryColor,
                 textColor: secondaryColor,
@@ -84,7 +74,7 @@ class PopupCouponContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Form(
-        key: _formKey,
+        key: couponServices.formKeycouponAdd,
         child: Column(
           children: [
             SimpleTextLabel(
@@ -129,18 +119,5 @@ class PopupCouponContent extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  checkPopupFields(CouponModel model, BuildContext context) async {
-    if (validate()) {
-        await context.read<CouponProvider>().addCoupons(model).then((_) {
-          couponScreenRefresh(context);
-        });
-    }
-  }
-
-  couponScreenRefresh(BuildContext context) {
-    Navigator.pop(context);
-    context.read<CouponProvider>().getCouponDetailsProvider();
   }
 }

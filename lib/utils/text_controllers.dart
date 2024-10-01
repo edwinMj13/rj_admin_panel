@@ -11,6 +11,17 @@ final productQuantityController = TextEditingController();
 final productVariantTypeController = TextEditingController();
 final productVariantItemController = TextEditingController();
 
+final productEDITNameController = TextEditingController();
+final productEDITDescriptionController = TextEditingController();
+final productEDITBrandController = TextEditingController();
+final productEDITCategoryController = TextEditingController();
+final productEDITSubCategoryController = TextEditingController();
+final productEDITPriceController = TextEditingController();
+final productEDITSellingPriceController = TextEditingController();
+final productEDITQuantityController = TextEditingController();
+final productEDITVariantTypeController = TextEditingController();
+final productEDITVariantItemController = TextEditingController();
+
 final popupCategoryNameController = TextEditingController();
 final popupSub_CategoryNameController = TextEditingController();
 

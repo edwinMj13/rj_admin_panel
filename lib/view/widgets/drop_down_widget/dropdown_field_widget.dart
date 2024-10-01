@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 class DropDownFormWidget extends StatelessWidget {
   final List<String> items;
-  String? selectedValue;
   final String label;
 
   DropDownFormWidget({
@@ -14,14 +13,17 @@ class DropDownFormWidget extends StatelessWidget {
     required this.label,
   });
 
+  String? selectedValue;
+
   @override
   Widget build(BuildContext context) {
-    print("Drop $items");
+    print("Drop ${items}");
     return DropdownButtonFormField(
+
       value: selectedValue,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
       items: items
           .map(
@@ -35,6 +37,7 @@ class DropDownFormWidget extends StatelessWidget {
         selectedValue = val.toString();
         print(val);
         if (label == "Select Category" && selectedValue != null) {
+          selectedValue=null;
           context.read<CommonProvider>().getSubCategory(val.toString());
         }
         if(label=="Select Brand"){
@@ -44,7 +47,6 @@ class DropDownFormWidget extends StatelessWidget {
         }else if(label=="Select Sub-Category"){
           context.read<CommonProvider>().selectedItemString('s', val.toString());
         }
-
       },
       validator: (value) {
         if (value == null) {

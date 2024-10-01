@@ -2,13 +2,14 @@ import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/data/models/product_model.dart';
+import 'package:project_rj_admin_panel/services/products_services.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/category_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/common_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/products_provider.dart';
-import 'package:project_rj_admin_panel/view/widgets/dropdown_field_widget.dart';
+import 'package:project_rj_admin_panel/view/widgets/drop_down_widget/dropdown_field_widget.dart';
 import 'package:project_rj_admin_panel/view/widgets/simple_text_label.dart';
 import 'package:project_rj_admin_panel/repository/common.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
@@ -18,18 +19,35 @@ import '../../../data/models/storage_image_model.dart';
 import '../../../utils/isolates.dart';
 import '../../../utils/text_controllers.dart';
 import '../custom_elevated_button.dart';
+import '../drop_down_widget/dropdown_edit_field_widget.dart';
 import '../multiple_images_widget.dart';
 
-class PopupProductContent extends StatelessWidget {
+class PopupProductContent extends StatefulWidget {
   final String title;
 
   PopupProductContent({super.key, required this.title});
 
-  final _formKey = GlobalKey<FormState>();
+  @override
+  State<PopupProductContent> createState() => _PopupProductContentState();
+}
+
+class _PopupProductContentState extends State<PopupProductContent> {
+  ProductServices productServices = ProductServices();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData();
+    super.initState();
+  }
+
+  getData() async {
+    await context.read<CommonProvider>().getBrandsNames();
+    await context.read<CommonProvider>().getCategoryNames();
+  }
 
   @override
   Widget build(BuildContext context) {
-    //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data")));
     return Container(
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
@@ -37,96 +55,83 @@ class PopupProductContent extends StatelessWidget {
         color: secondaryColor,
         borderRadius: BorderRadius.circular(10.0),
       ),
-      child: Column(
-        children: [
-          _textFieldContent(context),
-        ],
+      child: Form(
+        key: productServices.formKeyProductAdd,
+       child:_textFieldContent(context),
       ),
     );
   }
 
-  validate() {
-    final isTrue = _formKey.currentState!.validate();
-    if (isTrue) {
-      return true;
-    }
-    return false;
-  }
-
   Widget _textFieldContent(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          SimpleTextLabel(
-            controller: productNameController,
-            labelText: "Product Name",
-            errorLabel: "Enter Product Name",
-          ),
-          sizedHeight10,
-          _description_images(),
-          sizedHeight10,
-          Row(
-            children: [
-              Consumer<CommonProvider>(
-                builder: (context, value, _) {
-                  return Expanded(
-                      child: DropDownFormWidget(
-                    items: value.brandsNames!,
-                    label: "Select Brand",
-                  ));
-                },
-              ),
-              sizedWidth10,
-              Consumer<CommonProvider>(
-                builder: (context, value, _) {
-                  return Expanded(
-                      child: DropDownFormWidget(
-                    items: value.categoryNames!,
-                    label: "Select Category",
-                  ));
-                },
-              ),
-              sizedWidth10,
-              Consumer<CommonProvider>(
-                builder: (context, value, _) {
-                  print("Value subListProducts ${value.subListProducts}");
-                  return Expanded(
-                      child: DropDownFormWidget(
-                    items: value.subListProducts! ?? ["", ""],
-                    label: "Select Sub-Category",
-                  ));
-                },
-              ),
-            ],
-          ),
-          sizedHeight10,
-          _price_quantity(),
-          //sizedHeight10,
-          //_variant(),
-          sizedHeight20,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Elev_Button(
-                onPressed: () => Navigator.pop(context),
-                borderColor: primaryColor,
-                buttonBackground: secondaryColor,
-                textColor: primaryColor,
-                text: 'Cancel',
-              ),
-              Elev_Button(
-                onPressed: () async {
-                  checkPopupFields(context);
-                },
-                buttonBackground: primaryColor,
-                textColor: secondaryColor,
-                text: 'Add',
-              ),
-            ],
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        SimpleTextLabel(
+          controller: productNameController,
+          labelText: "Product Name",
+          errorLabel: "Enter Product Name",
+        ),
+        sizedHeight10,
+        _description_images(),
+        sizedHeight10,
+        Row(
+          children: [
+            Consumer<CommonProvider>(
+              builder: (context, value, _) {
+                return Expanded(
+                    child: DropDownFormWidget(
+                  items: value.brandsNames!,
+                  label: "Select Brand",
+                ));
+              },
+            ),
+            sizedWidth10,
+            Consumer<CommonProvider>(
+              builder: (context, value, _) {
+                return Expanded(
+                    child: DropDownFormWidget(
+                  items: value.categoryNames!,
+                  label: "Select Category",
+                ));
+              },
+            ),
+            sizedWidth10,
+            Consumer<CommonProvider>(
+              builder: (context, value, _) {
+                return Expanded(
+                    child: DropDownFormWidget(
+                      items: value.subListProducts,
+                      label: "Select Sub-Category",
+                    ));
+              },
+            ),
+          ],
+        ),
+        sizedHeight10,
+        _price_quantity(),
+        //sizedHeight10,
+        //_variant(),
+        sizedHeight20,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Elev_Button(
+              onPressed: () => productServices.cancelPopup(context),
+              borderColor: primaryColor,
+              buttonBackground: secondaryColor,
+              textColor: primaryColor,
+              text: 'Cancel',
+            ),
+            Elev_Button(
+              onPressed: () async {
+                productServices.checkAndAdd(context);
+              },
+              buttonBackground: primaryColor,
+              textColor: secondaryColor,
+              text: 'Add',
+            ),
+          ],
+        )
+      ],
     );
   }
 
@@ -216,83 +221,16 @@ class PopupProductContent extends StatelessWidget {
             ],
           )),
           sizedWidth10,
-          Expanded(
+          const Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Add Images (Min. 2 images and Max. 6 images)"),
-              MultipleImagesWidget(),
+              MultipleImagesWidget(tag: "add",),
             ],
           )),
         ],
       ),
     );
   }
-
-  Future<void> checkPopupFields(BuildContext context) async {
-    print("QWERTYHGFDS${context.read<CommonProvider>().selectedBrand!}");
-    if (validate()) {
-      if (context.read<PickImageProvider>().multiple_Files.length >= 2) {
-        List<StorageImageModel> imageLIst =
-            await getFirebaseStorageMULTIPLEImageUrl(
-          context.read<PickImageProvider>().multiple_Files,
-          refName: "productIMages",
-          productName: productNameController.text,
-        );
-        final model = ProductModel(
-          imagesList: imageLIst,
-          firebaseNodeId: "",
-          //image: "image",
-          itemName: productNameController.text,
-          category: context.read<CommonProvider>().selectedCategory!,
-          itemBrand: context.read<CommonProvider>().selectedBrand!,
-          price: productPriceController.text,
-          sellingPrize: productSellingPriceController.text,
-          stock: productQuantityController.text,
-          status: "Selling",
-          subCategory: context.read<CommonProvider>().selectedCategory!,
-          description: productDescriptionController.text,
-        );
-        context.read<ProductsProvider>().addProductData(model).then((_) {
-          refresh(context);
-        });
-      }
-    }
-    if (context.read<PickImageProvider>().multiple_Files.length < 2){
-      showSnackbar(context, "Select atleast 2 images");
-    }
-  }
-
-  void refresh(BuildContext context) {
-    Navigator.pop(context);
-    context.read<ProductsProvider>().getProductsDataProvider();
-  }
 }
-
-/*return Row(
-      children: [
-        Expanded(
-          child: SimpleTextLabel(
-            controller: productBrandController,
-            labelText: "Brand",
-            errorLabel: "Enter Brand",
-          ),
-        ),
-        sizedWidth10,
-        Expanded(
-          child: SimpleTextLabel(
-            controller: productCategoryController,
-            labelText: "Category",
-            errorLabel: "Enter Category Name",
-          ),
-        ),
-        sizedWidth10,
-        Expanded(
-          child: SimpleTextLabel(
-            controller: productSubCategoryController,
-            labelText: "Sub-Category",
-            errorLabel: "Enter Sub-Category",
-          ),
-        ),
-      ],
-    );*/

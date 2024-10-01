@@ -21,14 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    getDrops();
+    context.read<CommonProvider>().getBrandsNames();
+    context.read<CommonProvider>().getCategoryNames();
     super.initState();
   }
 
-  getDrops() async {
-    await context.read<CommonProvider>().getBrandsNames();
-    await context.read<CommonProvider>().getCategoryNames();
-  }
 
   @override
   Widget build(BuildContext context) {

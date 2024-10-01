@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/src/platform_file.dart';
 import 'package:flutter/material.dart';
+import 'package:project_rj_admin_panel/data/models/storage_image_model.dart';
 import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:provider/provider.dart';
@@ -10,10 +11,10 @@ import 'package:provider/provider.dart';
 import '../../utils/constants.dart';
 
 class MultipleImagesWidget extends StatelessWidget {
-  List<dynamic>? imageList;
-  MultipleImagesWidget({
-    this.imageList,
+  final String tag;
+  const MultipleImagesWidget({
     super.key,
+    required this.tag,
   });
 
   @override
@@ -27,13 +28,13 @@ class MultipleImagesWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(color: selectionColor, width: 0.5),
           ),
-          child: value.multiple_Files == null || value.multiple_Files.isEmpty
+          child: value.imagesUrl == null || value.imagesUrl.isEmpty
               ? dummyList(context)
               : Wrap(
                   crossAxisAlignment: WrapCrossAlignment.start,
                   alignment: WrapAlignment.center,
                   spacing: 5,
-                  children: buildList(value, context),
+                  children: buildList(value.imagesUrl, context),
                 ),
         );
       },
@@ -42,7 +43,7 @@ class MultipleImagesWidget extends StatelessWidget {
 
   Widget dummyList(BuildContext context) {
     return InkWell(
-      onTap: ()=>context.read<PickImageProvider>().pickMultipleImages(()=>moreThanSix(context)),
+      onTap: ()=>context.read<PickImageProvider>().pickMultipleImages(tag,()=>moreThanSix(context)),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.grey[100],
@@ -75,11 +76,11 @@ class MultipleImagesWidget extends StatelessWidget {
     // });
   }
 
-  List<Widget> buildList(PickImageProvider value, BuildContext context) {
-    return List.generate(value.multiple_Files.length, (index) {
+  List<Widget> buildList(List<StorageImageModel> images, BuildContext context) {
+    return List.generate(images.length, (index) {
       return InkWell(
         onTap: () {
-          context.read<PickImageProvider>().pickMultipleImages(()=>moreThanSix(context));
+          context.read<PickImageProvider>().pickMultipleImages(tag,()=>moreThanSix(context));
         },
         child: Container(
           height: 80,
@@ -113,7 +114,7 @@ class MultipleImagesWidget extends StatelessWidget {
                       )),
                 ],
               ),
-              _getImage(value.multiple_Files[index]),
+              _getImage(images[index].downloadUrl),
             ],
           ),
         ),
@@ -132,9 +133,9 @@ class MultipleImagesWidget extends StatelessWidget {
    });
   }
 
-  _getImage(Uint8List file) {
+  _getImage(String file) {
     return ClipRRect(
-        child: Image.memory(
+        child: Image.network(
           file,
       fit: BoxFit.cover,
       scale: 5,

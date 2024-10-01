@@ -22,7 +22,7 @@ Future<List<StorageImageModel>> getFirebaseStorageMULTIPLEImageUrl(List<Uint8Lis
   final  List<StorageImageModel> storageImageData=[];
   for(Uint8List item in imageList!){
   var imageName = DateTime.now().millisecondsSinceEpoch.toString();
-  var storageRef = FirebaseStorage.instance.ref().child('$refName/$productName/$imageName.jpg');
+  var storageRef = FirebaseStorage.instance.ref().child('productIMages/${productName}/$imageName.jpg');
   print("Storage Ref$storageRef");
   var uploadTask = storageRef.putData(item);
   var downloadUrl = await (await uploadTask).ref.getDownloadURL();

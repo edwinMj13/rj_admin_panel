@@ -52,7 +52,7 @@ class PopupEDITContentBrandWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Elev_Button(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => brandServices.clearFields(context),
                 borderColor: primaryColor,
                 buttonBackground: secondaryColor,
                 textColor: primaryColor,

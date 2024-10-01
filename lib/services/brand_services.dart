@@ -3,12 +3,14 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
+import 'package:project_rj_admin_panel/utils/text_controllers.dart';
 import 'package:provider/provider.dart';
 
 import '../data/models/brand_model.dart';
 import '../data/models/storage_image_model.dart';
 import '../repository/common.dart';
 import '../view/providers/brand_provider.dart';
+import '../view/providers/common_provider.dart';
 import '../view/providers/home_provider.dart';
 import '../view/providers/pick_image_provider.dart';
 import '../view/widgets/popupcard_title_image_widget.dart';
@@ -39,7 +41,6 @@ class BrandServices {
   }
 
   checkAndAddBrand(String name, BuildContext context) async {
-    //print("object");
     if (validateAddForm() &&
         context.read<PickImageProvider>().imageFile!.bytes != null) {
       final image = context.read<PickImageProvider>().imageFile!.bytes;
@@ -62,14 +63,20 @@ class BrandServices {
     }
   }
 
-  void _contextRefresh(BuildContext context) {
-    context.read<BrandProvider>().getBrandsProvider();
+  clearFields(BuildContext context){
+    popupEDITBrandNameController.clear();
+    popupBrandNameController.clear();
     context.read<PickImageProvider>().fileSetToNull();
     Navigator.pop(context);
   }
 
+  _contextRefresh(BuildContext context)  {
+    context.read<BrandProvider>().getBrandsProvider();
+    clearFields(context);
+    context.read<CommonProvider>().getBrandsNames();
+  }
+
   Future<int> createBrandId() async {
-    //List<BrandModel> model=[];
     final refData = await FirebaseFirestore.instance.collection('Brands').get();
     final data = refData.docs;
     List model = data
@@ -83,13 +90,12 @@ class BrandServices {
       int str = model.last;
       id = str + 1;
     }
-    // print(model.last);
     return id;
   }
 
+
   checkAndUpdateBrand(
       String name, BuildContext context, BrandModel model) async {
-    //print("object");
     if (validateUpdateForm() && model.image != null && unitImage == null) {
       final modelBrand = BrandModel(
         imageRefPath: model.imageRefPath,
@@ -119,13 +125,14 @@ class BrandServices {
 
   onDeletePress(BuildContext context, String nodeId) {
     context.read<BrandProvider>().deleteBrandDetails(nodeId);
+    context.read<CommonProvider>().getBrandsNames();
   }
 
   void onEditPress(BuildContext context, BrandModel model) {
     final label = getScreenLabel(context.read<HomeProvider>().index);
-    //context.read<SubjectBloc>()
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
             contentPadding: const EdgeInsets.all(0.0),

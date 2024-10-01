@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/data/models/brand_model.dart';
 import 'package:project_rj_admin_panel/data/models/category_model.dart';
 import 'package:project_rj_admin_panel/data/models/product_model.dart';
+import 'package:project_rj_admin_panel/services/category_services.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/category_provider.dart';
 import 'package:project_rj_admin_panel/view/widgets/popupcard_title_image_widget.dart';
@@ -15,8 +16,8 @@ import '../list_items_title_widget.dart';
 
 class ListItemsTableWidgetCategory extends StatelessWidget {
   final List<CategoryModel> listData;
-
-  const ListItemsTableWidgetCategory({super.key, required this.listData});
+  CategoryServices categoryServices = CategoryServices();
+   ListItemsTableWidgetCategory({super.key, required this.listData});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class ListItemsTableWidgetCategory extends StatelessWidget {
                   iconColor: Colors.black),
               SimpleIconWidget(
                   icon: Icons.delete,
-                  onPress:()=> onDeletePress(context,e.fireID),
+                  onPress:()=> categoryServices.onDeletePress(context,e.fireID),
                   iconColor: Colors.red),
             ],
           ),
@@ -79,6 +80,7 @@ class ListItemsTableWidgetCategory extends StatelessWidget {
     }).toList();
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
             contentPadding: const EdgeInsets.all(0.0),
@@ -89,9 +91,5 @@ class ListItemsTableWidgetCategory extends StatelessWidget {
             ),
           );
         });
-  }
-
-  onDeletePress(BuildContext context, String fireID,) {
-    context.read<CategoryProvider>().deleteCategoryDetail(fireID);
   }
 }

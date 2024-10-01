@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:project_rj_admin_panel/data/models/brand_model.dart';
 import 'package:project_rj_admin_panel/data/models/category_model.dart';
 
+import '../view/providers/common_provider.dart';
+
 class DatabaseServicesBrand {
   final firebase = FirebaseFirestore.instance;
 

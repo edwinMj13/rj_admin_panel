@@ -2,13 +2,14 @@ import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/data/models/product_model.dart';
+import 'package:project_rj_admin_panel/services/products_services.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/category_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/common_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/products_provider.dart';
-import 'package:project_rj_admin_panel/view/widgets/dropdown_field_widget.dart';
+import 'package:project_rj_admin_panel/view/widgets/drop_down_widget/dropdown_field_widget.dart';
 import 'package:project_rj_admin_panel/view/widgets/simple_text_label.dart';
 import 'package:project_rj_admin_panel/repository/common.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
@@ -18,26 +19,43 @@ import '../../../data/models/storage_image_model.dart';
 import '../../../utils/isolates.dart';
 import '../../../utils/text_controllers.dart';
 import '../custom_elevated_button.dart';
+import '../drop_down_widget/dropdown_edit_field_widget.dart';
 import '../multiple_images_widget.dart';
 
-class PopupEDITProductContent extends StatelessWidget {
+class PopupEDITProductContent extends StatefulWidget {
   final String title;
   ProductModel? model;
 
   PopupEDITProductContent({super.key, required this.title, this.model});
 
-  final _formKey = GlobalKey<FormState>();
+  @override
+  State<PopupEDITProductContent> createState() =>
+      _PopupEDITProductContentState();
+}
+
+class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
+  ProductServices productServices = ProductServices();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<ProductsProvider>().getImagesForUpdate(
+        widget.model!.imagesList);
+    context.read<PickImageProvider>().addToImages(widget.model!.imagesList);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data")));
-    productDescriptionController.text = model!.description;
+    productDescriptionController.text = widget.model!.description;
     productSubCategoryController;
-    productQuantityController.text = model!.stock;
-    productSellingPriceController.text = model!.sellingPrize;
-    productPriceController.text = model!.price;
-    productNameController.text = model!.itemName;
-    productBrandController.text = model!.itemBrand;
+    productQuantityController.text = widget.model!.stock;
+    productSellingPriceController.text = widget.model!.sellingPrize;
+    productPriceController.text = widget.model!.price;
+    productNameController.text = widget.model!.itemName;
+    productBrandController.text = widget.model!.itemBrand;
+
     //productSubCategoryController.text=model.su
     return Container(
       margin: const EdgeInsets.all(20),
@@ -54,17 +72,9 @@ class PopupEDITProductContent extends StatelessWidget {
     );
   }
 
-  validate() {
-    final isTrue = _formKey.currentState!.validate();
-    if (isTrue) {
-      return true;
-    }
-    return false;
-  }
-
   Widget _textFieldContent(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: productServices.formKeyProductUpdate,
       child: Column(
         children: [
           SimpleTextLabel(
@@ -80,31 +90,31 @@ class PopupEDITProductContent extends StatelessWidget {
               Consumer<CommonProvider>(
                 builder: (context, value, _) {
                   return Expanded(
-                      child: DropDownFormWidget(
-                    items: value.brandsNames!,
-                    label: "Select Brand",
-                  ));
+                      child: DropDownEDITFormSubCategoryWidget(
+                        items: value.brandsNames!,
+                        label: "Select Brand",
+                      ));
                 },
               ),
               Consumer<CommonProvider>(
                 builder: (context, value, _) {
                   return Expanded(
-                      child: DropDownFormWidget(
-                    items: value.categoryNames!,
-                    label: "Select Category",
-                  ));
+                      child: DropDownEDITFormSubCategoryWidget(
+                        items: value.categoryNames!,
+                        label: "Select Category",
+                      ));
                 },
               ),
               Consumer<CommonProvider>(
-                builder: (context, value, _) {
-                  print("Value subListProducts ${value.subListProducts}");
+
+                builder: (context, value,_) {
                   return Expanded(
-                      child: DropDownFormWidget(
-                    items: value.subListProducts! ?? ["", ""],
-                    label: "Select Sub-Category",
-                  ));
+                      child: DropDownEDITFormSubCategoryWidget(
+                          items: value.subListProducts,
+                        label: "Select Sub-Category",
+                      ));
                 },
-              ),
+              )
             ],
           ),
           sizedHeight10,
@@ -124,7 +134,7 @@ class PopupEDITProductContent extends StatelessWidget {
               ),
               Elev_Button(
                 onPressed: () async {
-                  checkPopupFields(context);
+                  productServices.checkAndUpdate(context, widget.model);
                 },
                 buttonBackground: primaryColor,
                 textColor: secondaryColor,
@@ -150,10 +160,10 @@ class PopupEDITProductContent extends StatelessWidget {
         sizedWidth10,
         Expanded(
             child: SimpleTextLabel(
-          controller: productVariantItemController,
-          labelText: "Variant Item",
-          errorLabel: "Enter Variant Item",
-        )),
+              controller: productVariantItemController,
+              labelText: "Variant Item",
+              errorLabel: "Enter Variant Item",
+            )),
       ],
     );
   }
@@ -171,10 +181,10 @@ class PopupEDITProductContent extends StatelessWidget {
         sizedWidth10,
         Expanded(
             child: SimpleTextLabel(
-          controller: productSellingPriceController,
-          labelText: "Selling Price",
-          errorLabel: "Enter Selling Price",
-        )),
+              controller: productSellingPriceController,
+              labelText: "Selling Price",
+              errorLabel: "Enter Selling Price",
+            )),
         sizedWidth10,
         Expanded(
           child: SimpleTextLabel(
@@ -193,95 +203,47 @@ class PopupEDITProductContent extends StatelessWidget {
         children: [
           Expanded(
               child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Description"),
-              Container(
-                height: 130,
-                width: 400,
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(color: selectionColor, width: 0.5),
-                ),
-                child: TextFormField(
-                    expands: true,
-                    minLines: null,
-                    maxLines: null,
-                    controller: productDescriptionController,
-                    keyboardType: TextInputType.multiline,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Description"),
+                  Container(
+                    height: 130,
+                    width: 400,
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(color: selectionColor, width: 0.5),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter Description";
-                      }
-                      return null;
-                    }),
-              ),
-            ],
-          )),
+                    child: TextFormField(
+                        expands: true,
+                        minLines: null,
+                        maxLines: null,
+                        controller: productDescriptionController,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Enter Description";
+                          }
+                          return null;
+                        }),
+                  ),
+                ],
+              )),
           sizedWidth10,
-          Expanded(
+          const Expanded(
               child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Add Images (Min. 2 images and Max. 6 images)"),
-              MultipleImagesWidget(
-                imageList: model!.imagesList,
-              ),
-            ],
-          )),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Add Images (Min. 2 images and Max. 6 images)"),
+                  MultipleImagesWidget(tag: "update",),
+                ],
+              )),
         ],
       ),
     );
-  }
-
-  Future<void> checkPopupFields(BuildContext context) async {
-    print("QWERTYHGFDS${context.read<CommonProvider>().selectedBrand!}");
-    int imageLength = context.read<PickImageProvider>().multiple_Files.length +
-        model!.imagesList.length;
-    if (validate() && imageLength >= 2 && imageLength<=6) {
-      List<StorageImageModel> imageLIst =
-          await getFirebaseStorageMULTIPLEImageUrl(
-        context.read<PickImageProvider>().multiple_Files,
-        refName: "productIMages",
-        productName: productNameController.text,
-      );
-      // List<StorageImageModel> stoModel2 = model!.imagesList.map((it){
-      //   StorageImageModel(storageRefPath: it.storageRefPath, downloadUrl: it.downloadUrl);
-      // }).toList();
-      List<dynamic> addData=[model!.imagesList,...imageLIst];
-      print("imageLIst Length ${imageLIst.length}\n"
-          "imageLIst ${imageLIst}");
-      print("model!.imagesList  ${model!.imagesList.length}\n"
-          "model!.imagesList  ${model!.imagesList}");
-      print("addData  ${addData}");
-
-      final models = ProductModel(
-        imagesList: addData,
-        firebaseNodeId: model!.firebaseNodeId,
-        //image: "image",
-        itemName: productNameController.text,
-        category: context.read<CommonProvider>().selectedCategory!,
-        itemBrand: context.read<CommonProvider>().selectedBrand!,
-        price: productPriceController.text,
-        sellingPrize: productSellingPriceController.text,
-        stock: productQuantityController.text,
-        status: "Selling",
-        subCategory: context.read<CommonProvider>().selectedCategory!,
-        description: productDescriptionController.text,
-      );
-      context.read<ProductsProvider>().updateProductData(models,model!.firebaseNodeId).then((_) {
-        refresh(context);
-      });
-    }
-  }
-
-  void refresh(BuildContext context) {
-    Navigator.pop(context);
-    context.read<ProductsProvider>().getProductsDataProvider();
   }
 }
 

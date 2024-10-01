@@ -12,7 +12,6 @@ class CouponProvider extends ChangeNotifier{
 
   Future<void> addCoupons(CouponModel model) async {
     await couponservices.addCouponDetails(model);
-    notifyListeners();
   }
 
   getCouponDetailsProvider() async {
@@ -22,10 +21,6 @@ class CouponProvider extends ChangeNotifier{
 
   Future<void> editCoupon(String fireId,CouponModel model) async {
     await couponservices.editCouponDetails(fireId, model);
-  }
-
-  refresh(){
-notifyListeners();
   }
 
   deleteCoupon(String id) async {

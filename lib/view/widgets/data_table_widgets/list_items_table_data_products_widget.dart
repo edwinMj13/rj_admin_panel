@@ -4,6 +4,7 @@ import 'package:project_rj_admin_panel/data/models/category_model.dart';
 import 'package:project_rj_admin_panel/data/models/coupon_model.dart';
 import 'package:project_rj_admin_panel/data/models/product_model.dart';
 import 'package:project_rj_admin_panel/data/models/storage_image_model.dart';
+import 'package:project_rj_admin_panel/services/products_services.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/coupon_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/products_provider.dart';
@@ -16,8 +17,9 @@ import '../list_items_title_widget.dart';
 
 class ListItemsTableWidgetProducts extends StatelessWidget {
   final List<ProductModel> listData;
+  ProductServices productServices=ProductServices();
 
-  const ListItemsTableWidgetProducts({super.key, required this.listData});
+  ListItemsTableWidgetProducts({super.key, required this.listData});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,7 @@ class ListItemsTableWidgetProducts extends StatelessWidget {
                   iconColor: Colors.black),
               SimpleIconWidget(
                   icon: Icons.delete,
-                  onPress: () => onDeletePress(e.firebaseNodeId,context),
+                  onPress: () => productServices.onDeletePress(e.firebaseNodeId, context),
                   iconColor: Colors.red),
             ],
           ),
@@ -80,8 +82,16 @@ class ListItemsTableWidgetProducts extends StatelessWidget {
 
   Widget _productImage(String image) => CircleAvatar(
       radius: 20,
-      child: Image.network(
-        image,
+      child: ClipRRect(
+        child: FadeInImage(
+          image: NetworkImage(
+            image,
+          ),
+          placeholder: AssetImage("assets/placehoderimage.png"),
+          imageErrorBuilder: (context, _, e) {
+            return Image.asset("assets/placehoderimage.png");
+          },
+        ),
       ));
 
   Text _tableItems(String data) => Text(data);
@@ -90,6 +100,7 @@ class ListItemsTableWidgetProducts extends StatelessWidget {
     // context.read<CouponProvider>().saveCouponDetailsToEdit(model);
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
             contentPadding: EdgeInsets.zero,
@@ -99,9 +110,5 @@ class ListItemsTableWidgetProducts extends StatelessWidget {
             ),
           );
         });
-  }
-
-  void onDeletePress(String firebaseNodeId,BuildContext context) {
-    context.read<ProductsProvider>().deleteProductDataProvider(firebaseNodeId);
   }
 }

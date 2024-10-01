@@ -71,7 +71,7 @@ class ListItemsTableWidgetCoupon extends StatelessWidget {
 
   void onEditPress(BuildContext context, CouponModel model) {
     showDialog(
-        context: context,
+        context: context,barrierDismissible: false,
         builder: (contexts) {
           return AlertDialog(
             contentPadding: EdgeInsets.all(0.0),

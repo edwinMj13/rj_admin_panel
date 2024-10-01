@@ -25,7 +25,6 @@ class PopupEDITContentCategoryWidget extends StatelessWidget {
   final String title;
   final CategoryModel? model;
   CategoryServices categoryServices=CategoryServices();
-  Uint8List? uniImage;
 
   PopupEDITContentCategoryWidget({
     super.key,
@@ -33,16 +32,6 @@ class PopupEDITContentCategoryWidget extends StatelessWidget {
     required this.title,
     required this.model,
   });
-
-  final formKey = GlobalKey<FormState>();
-
-  validateForm() {
-    final isOk = formKey.currentState!.validate();
-    if (isOk) {
-      return true;
-    }
-    return false;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +58,15 @@ class PopupEDITContentCategoryWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Elev_Button(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => categoryServices.clearFields(context),
                     borderColor: primaryColor,
                     buttonBackground: secondaryColor,
                     textColor: primaryColor,
                     text: 'Cancel',
                   ),
                   Elev_Button(
-                    onPressed: () => checkPopupFields(
-                        popupEDITCategoryNameController.text, context),
+                    onPressed: () => categoryServices.checkAndUpdateCategory(
+                        popupEDITCategoryNameController.text, context,model),
                     buttonBackground: primaryColor,
                     textColor: secondaryColor,
                     text: 'Update',
@@ -312,53 +301,8 @@ class PopupEDITContentCategoryWidget extends StatelessWidget {
     );
   }
 
-  checkPopupFields(String name, BuildContext context) async {
-    final subCtaegoryList = context.read<CategoryProvider>().subCategoryChip;
 
-    if (validateForm() && uniImage != null) {
-      print("addCategoryDetails");
-      StorageImageModel imageData = await getFirebaseStorageImageUrl(uniImage, 'categories');
-      print("Update With imageUrl EDIT");
-      await updateCategoryUNI(name, subCtaegoryList, imageData, context);
-    } else if (validateForm() &&
-        context.read<PickImageProvider>().imageFile == null) {
-      print("Update With ${model!.fireID} EDIT");
-      final catModel = CategoryModel(
-          imageRefPath: model!.imageRefPath,
-          id: model!.id,
-          status: model!.status,
-          categoryName: name,
-          subCategories: subCtaegoryList,
-          image: model!.image,
-          fireID: model!.fireID);
-      await context
-          .read<CategoryProvider>()
-          .updateCategoryDetails(catModel, model!.fireID)
-          .then((value) {
-        context.read<PickImageProvider>().imageFile != null;
-        _contextRefreshCategory(context);
-      });
-    }
-  }
 
-  Future<void> updateCategoryUNI(String name, List<String> subCtaegoryList,
-      StorageImageModel imgData, BuildContext context) async {
-    final catModel = CategoryModel(
-      imageRefPath: imgData.storageRefPath,
-        id: model!.id,
-        status: model!.status,
-        categoryName: name,
-        subCategories: subCtaegoryList,
-        image: imgData.downloadUrl,
-        fireID: model!.fireID);
-    await context
-        .read<CategoryProvider>()
-        .updateCategoryDetails(catModel, model!.fireID)
-        .then((value) {
-      context.read<PickImageProvider>().imageFile != null;
-      _contextRefreshCategory(context);
-    });
-  }
 
   //
   // Future<void> addCategory(
@@ -382,9 +326,4 @@ class PopupEDITContentCategoryWidget extends StatelessWidget {
   //     _contextRefreshCategory(context);
   //   });
   // }
-
-  void _contextRefreshCategory(BuildContext context) {
-    Navigator.pop(context);
-    context.read<CategoryProvider>().getCategoryProvider();
-  }
 }

@@ -7,7 +7,8 @@ class CommonProvider extends ChangeNotifier{
   final dBservicesBrand = DatabaseServicesBrand();
   final dBservicesCategory = DatabaseServicesCategory();
 
-  List<String>?  subListProducts=[];
+  List<String> _subListProducts=[];
+  List<String> get subListProducts=>_subListProducts;
 
   List<String>? _brandsNames=[];
   List<String>? get brandsNames => _brandsNames;
@@ -24,8 +25,10 @@ class CommonProvider extends ChangeNotifier{
    }
 
   getSubCategory(String catName)  async {
+     _subListProducts.clear();
+     subListProducts.clear();
     List<dynamic> list = await dBservicesCategory.getSubCategoryNames(catName);
-    subListProducts = list.cast<String>();
+    _subListProducts = list.cast<String>();
     notifyListeners();
   }
 

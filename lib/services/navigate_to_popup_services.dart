@@ -14,6 +14,7 @@ class NavigateToPopupServices {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) =>  AlertDialog(
         contentPadding: const EdgeInsets.all(0.0),
         content: PopupCardTitleImageWidget(
