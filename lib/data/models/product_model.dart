@@ -14,6 +14,8 @@ class ProductModel {
   final String stock;
   final String status;
   final String description;
+  final String productId;
+  final String? mainImage;
   final List<dynamic> imagesList;
 
   ProductModel({
@@ -25,6 +27,8 @@ class ProductModel {
     this.subCategory,
     required this.price,
     required this.sellingPrize,
+    required this.productId,
+    this.mainImage,
     required this.stock,
      required this.status,
     required this.description,
@@ -39,8 +43,10 @@ class ProductModel {
       "subCategory":subCategory,
       "price":price,
       "sellingPrize":sellingPrize,
+      "mainImage":mainImage,
       "status":status,
       "itemBrand":itemBrand,
+      "productId":productId,
       "stock":stock,
       "description":description,
       "imagesList":imagesList.map((image)=>image.toMap()),

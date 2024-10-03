@@ -41,6 +41,8 @@ class ProductServices{
         final model = ProductModel(
           imagesList: imageLIst,
           firebaseNodeId: "",
+          productId: "",
+          mainImage: imageLIst[0].downloadUrl,
           //image: "image",
           itemName: productNameController.text,
           category: context.read<CommonProvider>().selectedCategory!,
@@ -72,7 +74,7 @@ class ProductServices{
     productBrandController.clear();
   }
 
-  checkAndUpdate(BuildContext context, ProductModel? model) async {
+  checkAndUpdate(BuildContext context, ProductModel? model, List<StorageImageModel> alreadyImage) async {
     int imageLength = context.read<PickImageProvider>().multiple_Files.length +
         model!.imagesList.length;
     if (validateProductUpdate() && imageLength >= 2 && imageLength<=6) {
@@ -83,7 +85,7 @@ class ProductServices{
         productName: productNameController.text,
       );
 
-      List<dynamic> addData=[model.imagesList,...imageLIst];
+      List<StorageImageModel> addData=[...alreadyImage,...imageLIst];
       print("imageLIst Length ${imageLIst.length}\n"
           "imageLIst ${imageLIst}");
       print("model!.imagesList  ${model.imagesList.length}\n"
@@ -93,6 +95,8 @@ class ProductServices{
       final models = ProductModel(
         imagesList: addData,
         firebaseNodeId: model.firebaseNodeId,
+        productId: model.firebaseNodeId,
+        mainImage: addData[0].downloadUrl,
         //image: "image",
         itemName: productNameController.text,
         category: context.read<CommonProvider>().selectedCategory!,

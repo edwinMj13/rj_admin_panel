@@ -12,11 +12,13 @@ class DatabaseServicesProducts {
           .then((nodeId) async {
         final prodModel = ProductModel(
           itemBrand: model.itemBrand,
+          mainImage: model.mainImage,
           imagesList: model.imagesList,
           firebaseNodeId: nodeId.id,
           //image: model.image,
           itemName: model.itemName,
           category: model.category,
+          productId: nodeId.id,
           price: model.price,
           status: model.status,
           subCategory: model.subCategory,
@@ -44,8 +46,10 @@ class DatabaseServicesProducts {
                 imagesList: e.get("imagesList"),
                 itemBrand: e.get("itemBrand"),
                 firebaseNodeId: e.get("firebaseNodeId"),
+                mainImage: e.get("mainImage"),
                 // image: e.get("image"),
                 itemName: e.get("itemName"),
+                productId: e.get("productId"),
                 status: e.get("status"),
                 category: e.get("category"),
                 subCategory: e.get("subCategory"),
@@ -61,11 +65,10 @@ class DatabaseServicesProducts {
     return productList;
   }
 
-
-  Future<void> updateProductData(String nodeId,ProductModel model)async{
+  Future<void> updateProductData(String nodeId, ProductModel model) async {
     try {
       await firebase.collection("Products").doc(nodeId).update(model.toMap());
-    }catch(e){
+    } catch (e) {
       print("updateProductData Exception - ${e.toString()}");
     }
   }
@@ -73,5 +76,4 @@ class DatabaseServicesProducts {
   Future<void> deleteProduct(String nodeId) async {
     await firebase.collection("Products").doc(nodeId).delete();
   }
-
 }

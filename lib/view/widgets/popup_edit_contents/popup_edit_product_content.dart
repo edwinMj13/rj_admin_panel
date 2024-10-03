@@ -134,7 +134,8 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
               ),
               Elev_Button(
                 onPressed: () async {
-                  productServices.checkAndUpdate(context, widget.model);
+                  List<StorageImageModel> alreadyImage = widget.model!.imagesList.cast<StorageImageModel>();
+                  productServices.checkAndUpdate(context, widget.model,alreadyImage);
                 },
                 buttonBackground: primaryColor,
                 textColor: secondaryColor,
