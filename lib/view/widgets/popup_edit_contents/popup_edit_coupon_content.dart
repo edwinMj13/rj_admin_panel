@@ -39,37 +39,41 @@ class PopupEDITCouponContent extends StatelessWidget {
       child: Column(
         children: [
           _textFields(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Elev_Button(
-                onPressed: () => couponServices.clearFields(context),
-                borderColor: primaryColor,
-                buttonBackground: secondaryColor,
-                textColor: primaryColor,
-                text: 'Cancel',
-              ),
-              Elev_Button(
-                onPressed: () {
-                  double discount = couponServices.getDiscountInDouble(popupEDITDiscountController.text);
-                  final modelCoupon = CouponModel(
-                    firebaseCollectionID: model.firebaseCollectionID,
-                    code: popupEDITCodeController.text,
-                    campaignName: popupEDITCampaignNameController.text,
-                    discount: discount,
-                    status: model.status,
-                  );
-                  couponServices.checkCouponUpdate(modelCoupon, context);
-                },
-                buttonBackground: primaryColor,
-                textColor: secondaryColor,
-                text: 'Update',
-              ),
-            ],
-          )
+          _actionButtonSection(context)
         ],
       ),
     );
+  }
+
+  Row _actionButtonSection(BuildContext context) {
+    return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Elev_Button(
+              onPressed: () => couponServices.clearFields(context),
+              borderColor: primaryColor,
+              buttonBackground: secondaryColor,
+              textColor: primaryColor,
+              text: 'Cancel',
+            ),
+            Elev_Button(
+              onPressed: () {
+                double discount = couponServices.getDiscountInDouble(popupEDITDiscountController.text);
+                final modelCoupon = CouponModel(
+                  firebaseCollectionID: model.firebaseCollectionID,
+                  code: popupEDITCodeController.text,
+                  campaignName: popupEDITCampaignNameController.text,
+                  discount: discount,
+                  status: model.status,
+                );
+                couponServices.checkCouponUpdate(modelCoupon, context);
+              },
+              buttonBackground: primaryColor,
+              textColor: secondaryColor,
+              text: 'Update',
+            ),
+          ],
+        );
   }
 
   Widget _textFields() {

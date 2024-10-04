@@ -49,24 +49,28 @@ class ListItemsTableWidgetCoupon extends StatelessWidget {
         DataCell(Center(child: Text(e.code))),
         DataCell(Center(child: Text("${e.discount.toString()}%"))),
         DataCell(Center(child: Text(e.status))),
-        DataCell(Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SimpleIconWidget(
-                  icon: Icons.edit,
-                  onPress: () => onEditPress(context,e),
-                  iconColor: Colors.black),
-              SimpleIconWidget(
-                  icon: Icons.delete,
-                  onPress:()=> onDeletePress(e.firebaseCollectionID,context),
-                  iconColor: Colors.red),
-            ],
-          ),
-        ))
+        _actionButtonSection(context, e)
       ]);
     }).toList();
+  }
+
+  DataCell _actionButtonSection(BuildContext context, CouponModel e) {
+    return DataCell(Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SimpleIconWidget(
+                icon: Icons.edit,
+                onPress: () => onEditPress(context,e),
+                iconColor: Colors.black),
+            SimpleIconWidget(
+                icon: Icons.delete,
+                onPress:()=> onDeletePress(e.firebaseCollectionID,context),
+                iconColor: Colors.red),
+          ],
+        ),
+      ));
   }
 
   void onEditPress(BuildContext context, CouponModel model) {

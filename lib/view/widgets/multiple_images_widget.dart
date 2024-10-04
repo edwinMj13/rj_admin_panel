@@ -59,21 +59,6 @@ class MultipleImagesWidget extends StatelessWidget {
             )),
           ),
     );
-    // return List.generate(6, (index) {
-    //   return InkWell(
-    //     onTap: () {
-    //       context.read<PickImageProvider>().pickMultipleImages();
-    //     },
-    //     child: Container(
-    //       height: 70,
-    //       width: 40,
-    //       decoration: BoxDecoration(
-    //           color: Colors.grey[100],
-    //           borderRadius: BorderRadius.circular(5.0)),
-    //       child: const Text("Click to add images")
-    //     ),
-    //   );
-    // });
   }
 
   List<Widget> buildList(List<StorageImageModel> images, BuildContext context) {

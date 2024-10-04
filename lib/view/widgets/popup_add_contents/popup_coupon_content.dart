@@ -36,38 +36,42 @@ class PopupCouponContent extends StatelessWidget {
       child: Column(
         children: [
           _textFields(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Elev_Button(
-                onPressed: () => couponServices.clearFields(context),
-                borderColor: primaryColor,
-                buttonBackground: secondaryColor,
-                textColor: primaryColor,
-                text: 'Cancel',
-              ),
-              Elev_Button(
-                onPressed: () {
-                  double discount = couponServices.getDiscountInDouble(popupDiscountController.text);
-                  //assert(discount is double);
-                  final model = CouponModel(
-                    firebaseCollectionID: "",
-                    code: popupCodeController.text,
-                    campaignName: popupCampaignNameController.text,
-                    discount: discount,
-                    status: "Available",
-                  );
-                  couponServices.checkCouponAdd(model, context);
-                },
-                buttonBackground: primaryColor,
-                textColor: secondaryColor,
-                text: 'Add',
-              ),
-            ],
-          )
+          _actionButtonSection(context)
         ],
       ),
     );
+  }
+
+  Row _actionButtonSection(BuildContext context) {
+    return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Elev_Button(
+              onPressed: () => couponServices.clearFields(context),
+              borderColor: primaryColor,
+              buttonBackground: secondaryColor,
+              textColor: primaryColor,
+              text: 'Cancel',
+            ),
+            Elev_Button(
+              onPressed: () {
+                double discount = couponServices.getDiscountInDouble(popupDiscountController.text);
+                //assert(discount is double);
+                final model = CouponModel(
+                  firebaseCollectionID: "",
+                  code: popupCodeController.text,
+                  campaignName: popupCampaignNameController.text,
+                  discount: discount,
+                  status: "Available",
+                );
+                couponServices.checkCouponAdd(model, context);
+              },
+              buttonBackground: primaryColor,
+              textColor: secondaryColor,
+              text: 'Add',
+            ),
+          ],
+        );
   }
 
   Widget _textFields() {

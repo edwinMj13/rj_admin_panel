@@ -16,7 +16,6 @@ import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/storage_image_model.dart';
-import '../../../utils/isolates.dart';
 import '../../../utils/text_controllers.dart';
 import '../custom_elevated_button.dart';
 import '../drop_down_widget/dropdown_edit_field_widget.dart';
@@ -73,66 +72,74 @@ class _PopupProductContentState extends State<PopupProductContent> {
         sizedHeight10,
         _description_images(),
         sizedHeight10,
-        Row(
-          children: [
-            Consumer<CommonProvider>(
-              builder: (context, value, _) {
-                return Expanded(
-                    child: DropDownFormWidget(
-                  items: value.brandsNames!,
-                  label: "Select Brand",
-                ));
-              },
-            ),
-            sizedWidth10,
-            Consumer<CommonProvider>(
-              builder: (context, value, _) {
-                return Expanded(
-                    child: DropDownFormWidget(
-                  items: value.categoryNames!,
-                  label: "Select Category",
-                ));
-              },
-            ),
-            sizedWidth10,
-            Consumer<CommonProvider>(
-              builder: (context, value, _) {
-                return Expanded(
-                    child: DropDownFormWidget(
-                      items: value.subListProducts,
-                      label: "Select Sub-Category",
-                    ));
-              },
-            ),
-          ],
-        ),
+        _brand_category_sub_section(),
         sizedHeight10,
         _price_quantity(),
         //sizedHeight10,
         //_variant(),
         sizedHeight20,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Elev_Button(
-              onPressed: () => productServices.cancelPopup(context),
-              borderColor: primaryColor,
-              buttonBackground: secondaryColor,
-              textColor: primaryColor,
-              text: 'Cancel',
-            ),
-            Elev_Button(
-              onPressed: () async {
-                productServices.checkAndAdd(context);
-              },
-              buttonBackground: primaryColor,
-              textColor: secondaryColor,
-              text: 'Add',
-            ),
-          ],
-        )
+        _actionButtonSection(context)
       ],
     );
+  }
+
+  Row _actionButtonSection(BuildContext context) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Elev_Button(
+            onPressed: () => productServices.cancelPopup(context),
+            borderColor: primaryColor,
+            buttonBackground: secondaryColor,
+            textColor: primaryColor,
+            text: 'Cancel',
+          ),
+          Elev_Button(
+            onPressed: () async {
+              productServices.checkAndAdd(context);
+            },
+            buttonBackground: primaryColor,
+            textColor: secondaryColor,
+            text: 'Add',
+          ),
+        ],
+      );
+  }
+
+  Row _brand_category_sub_section() {
+    return Row(
+        children: [
+          Consumer<CommonProvider>(
+            builder: (context, value, _) {
+              return Expanded(
+                  child: DropDownFormWidget(
+                items: value.brandsNames!,
+                label: "Select Brand",
+              ));
+            },
+          ),
+          sizedWidth10,
+          Consumer<CommonProvider>(
+            builder: (context, value, _) {
+              return Expanded(
+                  child: DropDownFormWidget(
+                items: value.categoryNames!,
+                label: "Select Category",
+              ));
+            },
+          ),
+          sizedWidth10,
+          Consumer<CommonProvider>(
+            builder: (context, value, _) {
+              return Expanded(
+                  child: DropDownFormWidget(
+                    items: value.subListProducts,
+                    label: "Select Sub-Category",
+                  ));
+            },
+          ),
+        ],
+      );
   }
 
   Row _variant() {

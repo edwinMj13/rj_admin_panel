@@ -44,28 +44,32 @@ class PopupContentBrandWidget extends StatelessWidget {
           sizedHeight10,
           _textField(),
           sizedHeight10,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Elev_Button(
-                onPressed: () => brandServices.clearFields(context),
-                borderColor: primaryColor,
-                buttonBackground: secondaryColor,
-                textColor: primaryColor,
-                text: 'Cancel',
-              ),
-              Elev_Button(
-                onPressed: () =>
-                    brandServices.checkAndAddBrand(popupBrandNameController.text, context),
-                buttonBackground: primaryColor,
-                textColor: secondaryColor,
-                text: 'Add',
-              ),
-            ],
-          )
+          _actionButtons(context)
         ],
       ),
     );
+  }
+
+  Row _actionButtons(BuildContext context) {
+    return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Elev_Button(
+              onPressed: () => brandServices.clearFields(context),
+              borderColor: primaryColor,
+              buttonBackground: secondaryColor,
+              textColor: primaryColor,
+              text: 'Cancel',
+            ),
+            Elev_Button(
+              onPressed: () =>
+                  brandServices.checkAndAddBrand(popupBrandNameController.text, context),
+              buttonBackground: primaryColor,
+              textColor: secondaryColor,
+              text: 'Add',
+            ),
+          ],
+        );
   }
 
   // saveTtoString(BuildContext context){

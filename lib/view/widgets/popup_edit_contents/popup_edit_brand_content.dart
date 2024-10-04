@@ -48,28 +48,32 @@ class PopupEDITContentBrandWidget extends StatelessWidget {
           sizedHeight10,
           _textField(),
           sizedHeight10,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Elev_Button(
-                onPressed: () => brandServices.clearFields(context),
-                borderColor: primaryColor,
-                buttonBackground: secondaryColor,
-                textColor: primaryColor,
-                text: 'Cancel',
-              ),
-              Elev_Button(
-                onPressed: () =>
-                    brandServices.checkAndUpdateBrand(popupEDITBrandNameController.text, context,model),
-                buttonBackground: primaryColor,
-                textColor: secondaryColor,
-                text: 'Update',
-              ),
-            ],
-          )
+          _actionButtonSection(context)
         ],
       ),
     );
+  }
+
+  Row _actionButtonSection(BuildContext context) {
+    return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Elev_Button(
+              onPressed: () => brandServices.clearFields(context),
+              borderColor: primaryColor,
+              buttonBackground: secondaryColor,
+              textColor: primaryColor,
+              text: 'Cancel',
+            ),
+            Elev_Button(
+              onPressed: () =>
+                  brandServices.checkAndUpdateBrand(popupEDITBrandNameController.text, context,model),
+              buttonBackground: primaryColor,
+              textColor: secondaryColor,
+              text: 'Update',
+            ),
+          ],
+        );
   }
 
 

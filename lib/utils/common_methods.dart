@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../data/models/storage_image_model.dart';
+
 String getScreenTag(int index){
 switch(index){
   case 1:
@@ -55,3 +57,12 @@ showSnackbar(BuildContext context,String title){
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(title)));
 }
 
+
+List<StorageImageModel> getImageListFromDynamic(List<dynamic> images) {
+  return images
+      .map((e) => StorageImageModel(
+    storageRefPath: e["storageRefPath"],
+    downloadUrl: e["downloadUrl"],
+  ))
+      .toList();
+}

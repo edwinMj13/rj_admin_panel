@@ -50,23 +50,27 @@ class ListItemsTableWidgetBrand extends StatelessWidget {
             DataCell(Center(child: Text("BR${e.id.toString()}"))),
             DataCell(Center(child: Text(e.name))),
             DataCell(Center(child: Text(e.status))),
-            DataCell(Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SimpleIconWidget(
-                      icon: Icons.edit,
-                      onPress: () => brandServices.onEditPress(context, e),
-                      iconColor: Colors.black),
-                  SimpleIconWidget(
-                      icon: Icons.delete,
-                      onPress: () => brandServices.onDeletePress(context, e.nodeId),
-                      iconColor: Colors.red),
-                ],
-              ),
-            ))
+            __actionButtonSection(context, e)
           ]);
     }).toList();
+  }
+
+  DataCell __actionButtonSection(BuildContext context, BrandModel e) {
+    return DataCell(Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SimpleIconWidget(
+                    icon: Icons.edit,
+                    onPress: () => brandServices.onEditPress(context, e),
+                    iconColor: Colors.black),
+                SimpleIconWidget(
+                    icon: Icons.delete,
+                    onPress: () => brandServices.onDeletePress(context, e.nodeId),
+                    iconColor: Colors.red),
+              ],
+            ),
+          ));
   }
 }

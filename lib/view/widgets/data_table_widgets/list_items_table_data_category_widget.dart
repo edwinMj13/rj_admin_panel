@@ -51,24 +51,28 @@ class ListItemsTableWidgetCategory extends StatelessWidget {
         DataCell(Center(child: Text(e.categoryName))),
         DataCell(Center(child: Text(st))),
         DataCell(Center(child: Text(e.status))),
-        DataCell(Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SimpleIconWidget(
-                  icon: Icons.edit,
-                  onPress: () => onEditPress(context, e),
-                  iconColor: Colors.black),
-              SimpleIconWidget(
-                  icon: Icons.delete,
-                  onPress:()=> categoryServices.onDeletePress(context,e.fireID),
-                  iconColor: Colors.red),
-            ],
-          ),
-        ))
+        __actionButtonSection(context, e)
       ]);
     }).toList();
+  }
+
+  DataCell __actionButtonSection(BuildContext context, CategoryModel e) {
+    return DataCell(Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SimpleIconWidget(
+                icon: Icons.edit,
+                onPress: () => onEditPress(context, e),
+                iconColor: Colors.black),
+            SimpleIconWidget(
+                icon: Icons.delete,
+                onPress:()=> categoryServices.onDeletePress(context,e.fireID),
+                iconColor: Colors.red),
+          ],
+        ),
+      ));
   }
 
   void onEditPress(BuildContext context, CategoryModel model) {

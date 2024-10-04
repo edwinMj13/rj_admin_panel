@@ -54,30 +54,34 @@ class PopupEDITContentCategoryWidget extends StatelessWidget {
               sizedHeight20,
               sub_CategorySection(context),
               sizedHeight20,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Elev_Button(
-                    onPressed: () => categoryServices.clearFields(context),
-                    borderColor: primaryColor,
-                    buttonBackground: secondaryColor,
-                    textColor: primaryColor,
-                    text: 'Cancel',
-                  ),
-                  Elev_Button(
-                    onPressed: () => categoryServices.checkAndUpdateCategory(
-                        popupEDITCategoryNameController.text, context,model),
-                    buttonBackground: primaryColor,
-                    textColor: secondaryColor,
-                    text: 'Update',
-                  ),
-                ],
-              )
+              _actionButtonSection(context)
             ],
           );
         },
       ),
     );
+  }
+
+  Row _actionButtonSection(BuildContext context) {
+    return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Elev_Button(
+                  onPressed: () => categoryServices.clearFields(context),
+                  borderColor: primaryColor,
+                  buttonBackground: secondaryColor,
+                  textColor: primaryColor,
+                  text: 'Cancel',
+                ),
+                Elev_Button(
+                  onPressed: () => categoryServices.checkAndUpdateCategory(
+                      popupEDITCategoryNameController.text, context,model),
+                  buttonBackground: primaryColor,
+                  textColor: secondaryColor,
+                  text: 'Update',
+                ),
+              ],
+            );
   }
 
   /*Widget selectContent(BuildContext context, int categorySubIndex) {

@@ -16,7 +16,6 @@ import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/storage_image_model.dart';
-import '../../../utils/isolates.dart';
 import '../../../utils/text_controllers.dart';
 import '../custom_elevated_button.dart';
 import '../drop_down_widget/dropdown_edit_field_widget.dart';
@@ -85,67 +84,75 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
           sizedHeight10,
           _description_images(),
           sizedHeight10,
-          Row(
-            children: [
-              Consumer<CommonProvider>(
-                builder: (context, value, _) {
-                  return Expanded(
-                      child: DropDownEDITFormSubCategoryWidget(
-                        items: value.brandsNames!,
-                        label: "Select Brand",
-                      ));
-                },
-              ),
-              Consumer<CommonProvider>(
-                builder: (context, value, _) {
-                  return Expanded(
-                      child: DropDownEDITFormSubCategoryWidget(
-                        items: value.categoryNames!,
-                        label: "Select Category",
-                      ));
-                },
-              ),
-              Consumer<CommonProvider>(
-
-                builder: (context, value,_) {
-                  return Expanded(
-                      child: DropDownEDITFormSubCategoryWidget(
-                          items: value.subListProducts,
-                        label: "Select Sub-Category",
-                      ));
-                },
-              )
-            ],
-          ),
+          _brand_category_sub_Section(),
           sizedHeight10,
           _price_quantity(),
           //sizedHeight10,
           //_variant(),
           sizedHeight20,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Elev_Button(
-                onPressed: () => Navigator.pop(context),
-                borderColor: primaryColor,
-                buttonBackground: secondaryColor,
-                textColor: primaryColor,
-                text: 'Cancel',
-              ),
-              Elev_Button(
-                onPressed: () async {
-                  List<StorageImageModel> alreadyImage = widget.model!.imagesList.cast<StorageImageModel>();
-                  productServices.checkAndUpdate(context, widget.model,alreadyImage);
-                },
-                buttonBackground: primaryColor,
-                textColor: secondaryColor,
-                text: 'Update',
-              ),
-            ],
-          )
+          _actionButtonSection(context)
         ],
       ),
     );
+  }
+
+  Row _actionButtonSection(BuildContext context) {
+    return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Elev_Button(
+              onPressed: () => productServices.cancelPopup(context),
+              borderColor: primaryColor,
+              buttonBackground: secondaryColor,
+              textColor: primaryColor,
+              text: 'Cancel',
+            ),
+            Elev_Button(
+              onPressed: () async {
+                List<StorageImageModel> alreadyImage = widget.model!.imagesList.cast<StorageImageModel>();
+                productServices.checkAndUpdate(context, widget.model,alreadyImage);
+              },
+              buttonBackground: primaryColor,
+              textColor: secondaryColor,
+              text: 'Update',
+            ),
+          ],
+        );
+  }
+
+  Row _brand_category_sub_Section() {
+    return Row(
+          children: [
+            Consumer<CommonProvider>(
+              builder: (context, value, _) {
+                return Expanded(
+                    child: DropDownEDITFormSubCategoryWidget(
+                      items: value.brandsNames!,
+                      label: "Select Brand",
+                    ));
+              },
+            ),
+            Consumer<CommonProvider>(
+              builder: (context, value, _) {
+                return Expanded(
+                    child: DropDownEDITFormSubCategoryWidget(
+                      items: value.categoryNames!,
+                      label: "Select Category",
+                    ));
+              },
+            ),
+            Consumer<CommonProvider>(
+
+              builder: (context, value,_) {
+                return Expanded(
+                    child: DropDownEDITFormSubCategoryWidget(
+                        items: value.subListProducts,
+                      label: "Select Sub-Category",
+                    ));
+              },
+            )
+          ],
+        );
   }
 
   Row _variant() {
