@@ -32,4 +32,5 @@ class ProductsProvider extends ChangeNotifier {
     _updateImageList=images;
   }
 
+
 }

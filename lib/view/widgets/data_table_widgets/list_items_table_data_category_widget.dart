@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../../../utils/common_methods.dart';
 import '../../providers/home_provider.dart';
+import '../data_table_image_widget.dart';
 import '../list_items_title_widget.dart';
 
 class ListItemsTableWidgetCategory extends StatelessWidget {
@@ -47,6 +48,7 @@ class ListItemsTableWidgetCategory extends StatelessWidget {
       String st = e.subCategories!.join(",");
       print(st);
       return DataRow(color: const WidgetStatePropertyAll(Colors.white), cells: [
+        DataCell(Center(child: DataTableIMAGEWidget(image:e.image))),
         DataCell(Center(child: Text("CT${e.id.toString()}"))),
         DataCell(Center(child: Text(e.categoryName))),
         DataCell(Center(child: Text(st))),

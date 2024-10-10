@@ -22,6 +22,7 @@ class BrandModel{
 }
 
 List<String> brandTableTitle=[
+  "Image",
   "ID",
   "Name",
   "Status",

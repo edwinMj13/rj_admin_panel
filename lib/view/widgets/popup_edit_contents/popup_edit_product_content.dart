@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 
 import '../../../data/models/storage_image_model.dart';
 import '../../../utils/text_controllers.dart';
+import '../alternative_like_dropdown_but_popup.dart';
 import '../custom_elevated_button.dart';
 import '../drop_down_widget/dropdown_edit_field_widget.dart';
 import '../multiple_images_widget.dart';
@@ -41,21 +42,12 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
     context.read<ProductsProvider>().getImagesForUpdate(
         widget.model!.imagesList);
     context.read<PickImageProvider>().addToImages(widget.model!.imagesList);
+    ProductServices.setValuesToFields(widget.model!);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data")));
-    productDescriptionController.text = widget.model!.description;
-    productSubCategoryController;
-    productQuantityController.text = widget.model!.stock;
-    productSellingPriceController.text = widget.model!.sellingPrize;
-    productPriceController.text = widget.model!.price;
-    productNameController.text = widget.model!.itemName;
-    productBrandController.text = widget.model!.itemBrand;
-
-    //productSubCategoryController.text=model.su
     return Container(
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
@@ -66,10 +58,13 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
       child: Column(
         children: [
           _textFieldContent(context),
+          sizedHeight20,
+          _actionButtonSection(context)
         ],
       ),
     );
   }
+
 
   Widget _textFieldContent(BuildContext context) {
     return Form(
@@ -89,8 +84,6 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
           _price_quantity(),
           //sizedHeight10,
           //_variant(),
-          sizedHeight20,
-          _actionButtonSection(context)
         ],
       ),
     );
@@ -109,7 +102,8 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
             ),
             Elev_Button(
               onPressed: () async {
-                List<StorageImageModel> alreadyImage = widget.model!.imagesList.cast<StorageImageModel>();
+                List<StorageImageModel> alreadyImage = getImageListFromDynamic(widget.model!.imagesList);
+                print("alreadyImage From Model $alreadyImage");
                 productServices.checkAndUpdate(context, widget.model,alreadyImage);
               },
               buttonBackground: primaryColor,
@@ -123,7 +117,17 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
   Row _brand_category_sub_Section() {
     return Row(
           children: [
-            Consumer<CommonProvider>(
+            Expanded(child: AlternativeForDropDown(label: 'Brand',listenable: ProductServices.brandNotifier,)),
+            sizedWidth20,
+            Expanded(child: AlternativeForDropDown(label: 'Category',listenable: ProductServices.categoryNotifier,)),
+            sizedWidth20,
+            Expanded(child: ValueListenableBuilder(
+              valueListenable: ProductServices.subCategoryListNotifier,
+              builder: (context,snap,_) {
+                return AlternativeForDropDown(label: 'Sub-Category',listenable: ProductServices.subCategoryNotifier,list: snap,);
+              }
+            )),
+            /*Consumer<CommonProvider>(
               builder: (context, value, _) {
                 return Expanded(
                     child: DropDownEDITFormSubCategoryWidget(
@@ -150,7 +154,7 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
                       label: "Select Sub-Category",
                     ));
               },
-            )
+            )*/
           ],
         );
   }
@@ -241,7 +245,7 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
                 ],
               )),
           sizedWidth10,
-          const Expanded(
+           Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -254,6 +258,7 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
     );
   }
 }
+
 
 /*return Row(
       children: [

@@ -25,6 +25,7 @@ Map<String, dynamic> toMap(){
 }
 
 List<String> categoryTableTitle=[
+  "Image",
   "ID",
   "Name",
   "Description",

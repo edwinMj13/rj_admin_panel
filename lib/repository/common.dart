@@ -28,6 +28,7 @@ Future<List<StorageImageModel>> getFirebaseStorageMULTIPLEImageUrl(List<Uint8Lis
   var downloadUrl = await (await uploadTask).ref.getDownloadURL();
   storageImageData.add(StorageImageModel(storageRefPath: "$refName/$imageName.jpg", downloadUrl: downloadUrl));
   }
+  print("getFirebaseStorageMULTIPLEImageUrl$storageImageData");
   return storageImageData;
 }
 

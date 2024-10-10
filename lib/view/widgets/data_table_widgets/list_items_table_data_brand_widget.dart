@@ -10,6 +10,7 @@ import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../data_table_image_widget.dart';
 import '../list_items_title_widget.dart';
 
 class ListItemsTableWidgetBrand extends StatelessWidget {
@@ -47,6 +48,7 @@ class ListItemsTableWidgetBrand extends StatelessWidget {
       return DataRow(
           color: const WidgetStatePropertyAll(Colors.white),
           cells: [
+            DataCell(Center(child: DataTableIMAGEWidget(image:e.image))),
             DataCell(Center(child: Text("BR${e.id.toString()}"))),
             DataCell(Center(child: Text(e.name))),
             DataCell(Center(child: Text(e.status))),

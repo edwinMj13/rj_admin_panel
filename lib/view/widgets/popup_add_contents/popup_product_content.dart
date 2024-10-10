@@ -228,11 +228,11 @@ class _PopupProductContentState extends State<PopupProductContent> {
             ],
           )),
           sizedWidth10,
-          const Expanded(
+          Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Add Images (Min. 2 images and Max. 6 images)"),
+              const Text("Add Images (Min. 2 images and Max. 6 images)"),
               MultipleImagesWidget(tag: "add",),
             ],
           )),

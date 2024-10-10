@@ -10,5 +10,9 @@ class StorageImageModel{
       "downloadUrl":downloadUrl,
     };
   }
+  
+  StorageImageModel fromMap(Map<String,dynamic> map){
+    return StorageImageModel(storageRefPath: map["storageRefPath"], downloadUrl: map["downloadUrl"]);
+  }
 
 }

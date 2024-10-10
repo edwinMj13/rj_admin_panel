@@ -12,15 +12,23 @@ import '../../utils/constants.dart';
 
 class MultipleImagesWidget extends StatelessWidget {
   final String tag;
-  const MultipleImagesWidget({
+   MultipleImagesWidget({
     super.key,
     required this.tag,
   });
+
 
   @override
   Widget build(BuildContext context) {
     return Consumer<PickImageProvider>(
       builder: (context, value, child) {
+        // if(tag=="update") {
+        //   final toModel = getImageListFromDynamic(list!);
+        //   commonImageList = [...toModel,...value.imagesUrl];
+        // }else{
+        //   commonImageList.addAll(value.imagesUrl);
+        // }
+       // commonImageList.addAll(value.imagesUrl);
         return Container(
           height: 130,
           width: 400,

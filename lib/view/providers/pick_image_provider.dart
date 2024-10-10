@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:project_rj_admin_panel/data/models/brand_model.dart';
 import 'package:project_rj_admin_panel/data/models/storage_image_model.dart';
 import 'package:project_rj_admin_panel/repository/common.dart';
+import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/utils/text_controllers.dart';
 
 import '../../repository/database_services_brand.dart';
@@ -60,10 +61,10 @@ class PickImageProvider extends ChangeNotifier {
         }
         _imageLoading=false;
         if (tag == "update") {
-          _imagesUrl = await getFirebaseStorageMULTIPLEImageUrl(
+          _imagesUrl.addAll(await getFirebaseStorageMULTIPLEImageUrl(
             multiple_Files,
             productName: productEDITNameController.text,
-          );
+          ));
         } else {
           _imagesUrl = await getFirebaseStorageMULTIPLEImageUrl(
             multiple_Files,
@@ -85,7 +86,7 @@ class PickImageProvider extends ChangeNotifier {
   }
 
   addToImages(List<dynamic> images){
-    _imagesUrl=images.map((e)=>StorageImageModel(storageRefPath: e["storageRefPath"], downloadUrl: e["downloadUrl"])).toList();
+    _imagesUrl=getImageListFromDynamic(images);
   }
 
 }
