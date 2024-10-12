@@ -40,6 +40,13 @@ class _HomeScreenState extends State<HomeScreen> {
               child: SideBarWidget(),
             ),
           ),
+          Container(
+            height: double.infinity,
+            width: 0.2,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+            ),
+          ),
           Expanded(
             flex: 10,
             child: ContentSection(),

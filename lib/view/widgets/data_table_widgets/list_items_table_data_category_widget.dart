@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/data/models/brand_model.dart';
 import 'package:project_rj_admin_panel/data/models/category_model.dart';
 import 'package:project_rj_admin_panel/data/models/product_model.dart';
+import 'package:project_rj_admin_panel/data/raw%20data/common_data.dart';
+import 'package:project_rj_admin_panel/repository/database_services_category.dart';
 import 'package:project_rj_admin_panel/services/category_services.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/category_provider.dart';
+import 'package:project_rj_admin_panel/view/widgets/alternative_like_dropdown_but_popup.dart';
 import 'package:project_rj_admin_panel/view/widgets/popupcard_title_image_widget.dart';
 import 'package:project_rj_admin_panel/view/widgets/simple_icon_widget.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
+import 'package:project_rj_admin_panel/view/widgets/text_limited_hundred_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/common_methods.dart';
@@ -18,7 +22,8 @@ import '../list_items_title_widget.dart';
 class ListItemsTableWidgetCategory extends StatelessWidget {
   final List<CategoryModel> listData;
   CategoryServices categoryServices = CategoryServices();
-   ListItemsTableWidgetCategory({super.key, required this.listData});
+
+  ListItemsTableWidgetCategory({super.key, required this.listData});
 
   @override
   Widget build(BuildContext context) {
@@ -48,40 +53,73 @@ class ListItemsTableWidgetCategory extends StatelessWidget {
       String st = e.subCategories!.join(",");
       print(st);
       return DataRow(color: const WidgetStatePropertyAll(Colors.white), cells: [
-        DataCell(Center(child: DataTableIMAGEWidget(image:e.image))),
+        DataCell(Center(child: DataTableIMAGEWidget(image: e.image))),
         DataCell(Center(child: Text("CT${e.id.toString()}"))),
         DataCell(Center(child: Text(e.categoryName))),
-        DataCell(Center(child: Text(st))),
-        DataCell(Center(child: Text(e.status))),
+        DataCell(TextLimitedHundredWidget(name: st)),
+        DataCell(Center(
+            child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(e.status),
+            IconButton(
+                onPressed: () {
+                  _statusPopup(context, e);
+                },
+                icon: const Icon(Icons.arrow_drop_down))
+          ],
+        ))),
         __actionButtonSection(context, e)
       ]);
     }).toList();
   }
 
+  void _statusPopup(BuildContext context, CategoryModel e) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlternativeDropPopup(
+            list: CommonData.statusRawData(),
+            callBack: (selectedValue) {
+              final model = CategoryModel(
+                imageRefPath: e.imageRefPath,
+                fireID: e.fireID,
+                id: e.id,
+                status: selectedValue,
+                image: e.image,
+                categoryName: e.categoryName,
+                subCategories: e.subCategories,
+              );
+              categoryServices.updateStatusCategory(context, model);
+            },
+          );
+        });
+  }
+
   DataCell __actionButtonSection(BuildContext context, CategoryModel e) {
     return DataCell(Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SimpleIconWidget(
-                icon: Icons.edit,
-                onPress: () => onEditPress(context, e),
-                iconColor: Colors.black),
-            SimpleIconWidget(
-                icon: Icons.delete,
-                onPress:()=> categoryServices.onDeletePress(context,e.fireID),
-                iconColor: Colors.red),
-          ],
-        ),
-      ));
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SimpleIconWidget(
+              icon: Icons.edit,
+              onPress: () => onEditPress(context, e),
+              iconColor: Colors.black),
+          SimpleIconWidget(
+              icon: Icons.delete,
+              onPress: () => categoryServices.onDeletePress(context, e.fireID),
+              iconColor: Colors.red),
+        ],
+      ),
+    ));
   }
 
   void onEditPress(BuildContext context, CategoryModel model) {
-   // context.read<CategoryProvider>().editCategory(model);
-    String label=getScreenLabel(context.read<HomeProvider>().index);
+    // context.read<CategoryProvider>().editCategory(model);
+    String label = getScreenLabel(context.read<HomeProvider>().index);
     context.read<CategoryProvider>().clearCategoryList();
-    model.subCategories!.map((e){
+    model.subCategories!.map((e) {
       context.read<CategoryProvider>().addToSubCategory(e);
     }).toList();
     showDialog(

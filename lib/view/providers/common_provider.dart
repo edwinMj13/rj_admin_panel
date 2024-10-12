@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:project_rj_admin_panel/repository/database_services_brand.dart';
 import 'package:project_rj_admin_panel/repository/database_services_category.dart';
-import 'package:project_rj_admin_panel/services/products_services.dart';
+import 'package:project_rj_admin_panel/services/filter_services.dart';
+import 'package:project_rj_admin_panel/services/products_services/products_services.dart';
 
 class CommonProvider extends ChangeNotifier{
 
@@ -25,12 +26,9 @@ class CommonProvider extends ChangeNotifier{
     _categoryNames = list.cast<String>();
    }
 
-  getSubCategory(String catName)  async {
-     _subListProducts.clear();
-     subListProducts.clear();
+   getSubCategory(String catName)  async {
     List<dynamic> list = await dBservicesCategory.getSubCategoryNames(catName);
-    _subListProducts = list.cast<String>();
-    ProductServices.getSubCategoryList(_subListProducts);
+    FilterServices.getSubCategoryList(list.cast<String>());
     notifyListeners();
   }
 

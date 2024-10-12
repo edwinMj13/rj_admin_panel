@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:project_rj_admin_panel/services/common_services.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/utils/text_controllers.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ import '../view/widgets/popupcard_title_image_widget.dart';
 class BrandServices {
   final formKeyAddBrand = GlobalKey<FormState>();
   final formKeyUpdateBrand = GlobalKey<FormState>();
+  final commonServices = CommonServices();
   Uint8List? unitImage;
 
   validateAddForm() {
@@ -63,14 +65,14 @@ class BrandServices {
     }
   }
 
-  clearFields(BuildContext context){
+  clearFields(BuildContext context) {
     popupEDITBrandNameController.clear();
     popupBrandNameController.clear();
     context.read<PickImageProvider>().fileSetToNull();
     Navigator.pop(context);
   }
 
-  _contextRefresh(BuildContext context)  {
+  _contextRefresh(BuildContext context) {
     context.read<BrandProvider>().getBrandsProvider();
     clearFields(context);
     context.read<CommonProvider>().getBrandsNames();
@@ -93,9 +95,9 @@ class BrandServices {
     return id;
   }
 
-
   checkAndUpdateBrand(
       String name, BuildContext context, BrandModel model) async {
+    commonServices.loadingDialogShow(context);
     if (validateUpdateForm() && model.image != null && unitImage == null) {
       final modelBrand = BrandModel(
         imageRefPath: model.imageRefPath,
@@ -118,8 +120,12 @@ class BrandServices {
         name: name,
         status: model.status,
       );
-      await context.read<BrandProvider>().editBrandDetails(
-          modelBrand, model.nodeId, () => _contextRefresh(context));
+      await context
+          .read<BrandProvider>()
+          .editBrandDetails(modelBrand, model.nodeId, () {
+        commonServices.cancelLoading();
+        _contextRefresh(context);
+      });
     }
   }
 
@@ -143,5 +149,12 @@ class BrandServices {
             ),
           );
         });
+  }
+
+  brandStatusUpdate(BuildContext context, BrandModel model) {
+    context.read<BrandProvider>().editBrandDetails(model, model.nodeId, () {
+      context.read<BrandProvider>().getBrandsProvider();
+      Navigator.of(context).pop();
+    });
   }
 }

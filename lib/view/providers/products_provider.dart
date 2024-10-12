@@ -4,9 +4,6 @@ import 'package:project_rj_admin_panel/repository/database_services_products.dar
 
 class ProductsProvider extends ChangeNotifier {
   List<ProductModel>? _productsList;
-  List<dynamic>? _updateImageList;
-  List<dynamic>? get updateImageList => _updateImageList;
-
   List<ProductModel>? get productsList => _productsList;
 
   final database = DatabaseServicesProducts();
@@ -27,10 +24,5 @@ class ProductsProvider extends ChangeNotifier {
     await database.deleteProduct(nodeId).then((_)=>getProductsDataProvider());
     getProductsDataProvider();
   }
-
-  getImagesForUpdate(List<dynamic> images){
-    _updateImageList=images;
-  }
-
 
 }

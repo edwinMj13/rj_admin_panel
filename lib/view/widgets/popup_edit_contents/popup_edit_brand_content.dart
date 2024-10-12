@@ -34,7 +34,14 @@ class PopupEDITContentBrandWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     popupEDITBrandNameController.text=model.name;
+    final size = MediaQuery.of(context).size;
     return Container(
+      constraints: BoxConstraints(
+      minHeight: size.height * 0.2,
+      maxHeight: size.height * 0.3,
+      minWidth: size.width * 0.3,
+      maxWidth: size.width * 0.4,
+    ),
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -121,7 +128,9 @@ class PopupEDITContentBrandWidget extends StatelessWidget {
   Widget _getImage(PickImageProvider value) {
     late Widget widget;
     if (model.image != null && value.imageFile == null) {
-      widget = Image.network(model.image);
+      widget =  Image.network(
+          model.image,
+        );
     }else if ( value.imageFile != null) {
       //unitImage = value.imageFile.bytes;
       widget = ClipRRect(

@@ -69,6 +69,7 @@ flutter:
   assets:
      - assets/placehoderimage.svg
      - assets/image-circle-svgrepo-com.png
+     - assets/empty_list/empty_image.svg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

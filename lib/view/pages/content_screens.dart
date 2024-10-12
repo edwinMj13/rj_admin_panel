@@ -28,39 +28,49 @@ class ContentSection extends StatelessWidget {
           color: secondaryColor,
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
-            Container(
-              padding: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-              ),
-              height: 60,
-              decoration: const BoxDecoration(
-                color: secondaryColor,
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(),
-                  CircleAvatar(
-                    radius: 20,
-                    child: Icon(Icons.person),
-                  )
-                ],
-              ),
-            ),
-            Consumer<HomeProvider>(
-              builder: (context, value, child) {
-                //bool isVisible=false;
-                return Container(
-                  decoration:  const BoxDecoration(
+            _topBar(),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Consumer<HomeProvider>(
+                builder: (context, value, child) {
+                  //bool isVisible=false;
+                  return Container(
+
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
                       color: lightGrey,
                       borderRadius:
-                          BorderRadius.only(topLeft: Radius.circular(10.0))),
-                  child: //DashBoardWidgetScreen(),
-                      getContentScreen(value.index),
-                );
-              },
+                          BorderRadius.all( Radius.circular(10.0)),
+                    ),
+                    child: //DashBoardWidgetScreen(),
+                        getContentScreen(value.index),
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding _topBar() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+      child: Container(
+        height: 60,
+        decoration: const BoxDecoration(
+          color: secondaryColor,
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(),
+            CircleAvatar(
+              radius: 20,
+              child: Icon(Icons.person),
             )
           ],
         ),
@@ -70,11 +80,11 @@ class ContentSection extends StatelessWidget {
 
   Widget getContentScreen(int index) {
     print(index);
-    switch(index){
+    switch (index) {
       case 0:
         return const DashBoardWidgetScreen(title: 'DashBoard');
       case 1:
-        return const ProductScreen(title: "Add Products");
+        return const ProductScreen(title: "All Products");
       case 2:
         return const CategoryScreen();
       case 3:
@@ -84,6 +94,5 @@ class ContentSection extends StatelessWidget {
       default:
         return const SizedBox();
     }
-
   }
 }

@@ -25,17 +25,13 @@ class PopupCardTitleImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      constraints: BoxConstraints(
-        minHeight: size.height * 0.8,
-        maxHeight: size.height * 0.9,
-        minWidth: size.width * 0.5,
-        maxWidth: size.width * 0.6,
-      ),
+
       decoration: BoxDecoration(
         color: primaryColor,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           _popupTitle(),
           _getContent(),

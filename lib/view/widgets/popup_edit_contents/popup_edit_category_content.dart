@@ -276,7 +276,13 @@ class PopupEDITContentCategoryWidget extends StatelessWidget {
 
     late Widget widget;
     if (model!.image != null && value.imageFile == null) {
-      widget = Image.network(model!.image);
+      widget = ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: Image.network(
+          model!.image,
+          fit: BoxFit.cover,
+        ),
+      );
     }else if ( value.imageFile != null) {
       widget = ClipRRect(
         borderRadius: BorderRadius.circular(50),

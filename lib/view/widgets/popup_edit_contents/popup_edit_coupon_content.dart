@@ -29,7 +29,14 @@ class PopupEDITCouponContent extends StatelessWidget {
       popupEDITCampaignNameController.text = model.campaignName;
       popupEDITCodeController.text = model.code;
       popupEDITDiscountController.text = model.discount.toString();
+      final size = MediaQuery.of(context).size;
     return Container(
+      constraints: BoxConstraints(
+        minHeight: size.height * 0.2,
+        maxHeight: size.height * 0.3,
+        minWidth: size.width * 0.3,
+        maxWidth: size.width * 0.4,
+      ),
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(

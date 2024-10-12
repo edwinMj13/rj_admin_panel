@@ -143,4 +143,12 @@ class CategoryServices {
     context.read<CategoryProvider>().deleteCategoryDetail(fireID);
     context.read<CommonProvider>().getCategoryNames();
   }
+
+  updateStatusCategory(BuildContext context,CategoryModel model){
+    print(model.fireID);
+    context.read<CategoryProvider>().updateCategoryDetails(model,model.fireID).then((_){
+      context.read<CategoryProvider>().getCategoryProvider();
+      Navigator.of(context).pop();
+    });
+  }
 }

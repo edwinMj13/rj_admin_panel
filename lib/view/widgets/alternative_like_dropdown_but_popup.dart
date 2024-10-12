@@ -1,20 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/services/common_services.dart';
+import 'package:project_rj_admin_panel/services/filter_services.dart';
 import 'package:provider/provider.dart';
 
-import '../../services/products_services.dart';
+import '../../services/products_services/products_services.dart';
 import '../providers/common_provider.dart';
 
 class AlternativeForDropDown extends StatelessWidget {
   AlternativeForDropDown({
     super.key,
     required this.label,
-    this.list,
+    this.subList,
     required this.listenable,
   });
 
-  List<String>? list;
+  List<String>? subList;
   List<String> listTwo = [];
   final String label;
   final ValueListenable<String> listenable;
@@ -27,28 +28,11 @@ class AlternativeForDropDown extends StatelessWidget {
         builder: (context, snap, _) {
           return InkWell(
             onTap: () {
-              if (label == "Brand") {
-                context.read<CommonProvider>().getBrandsNames();
-                listTwo = context.read<CommonProvider>().brandsNames!;
-              } else if (label == "Category") {
-                context.read<CommonProvider>().getCategoryNames();
-                listTwo = context.read<CommonProvider>().categoryNames!;
-              }
-              if (label == "SubCategory" &&
-                  ProductServices.subCategoryNotifier.value == "Select") {
+              listTwo = FilterServices.populateCatBrandList(context, label);
+              if (label == "Sub-Category" && subList==null) {
                 print("Not Selected The Category");
               } else {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlternativeDropPopup(
-                        list: _getList(),
-                        callBack: (selectedValue) {
-                          productServices.selectFromPopupDialog(
-                              selectedValue, context, label);
-                        },
-                      );
-                    });
+                openPopup(context);
               }
             },
             child: Column(
@@ -78,7 +62,21 @@ class AlternativeForDropDown extends StatelessWidget {
         });
   }
 
-  List<String> _getList() => label == "Sub-Category" ? list! : listTwo;
+  void openPopup(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlternativeDropPopup(
+            list: _getList(),
+            callBack: (selectedValue) {
+              FilterServices.selectFromPopupDialog(
+                  selectedValue, context, label);
+            },
+          );
+        });
+  }
+
+  List<String> _getList() => label == "Sub-Category" ? subList! : listTwo;
 }
 
 class AlternativeDropPopup extends StatelessWidget {
@@ -104,7 +102,7 @@ class AlternativeDropPopup extends StatelessWidget {
           },
           child: Container(
             padding: const EdgeInsets.all(10),
-            width: size.width*0.5,
+            width: size.width * 0.5,
             child: Center(
               child: Text(
                 list[index],

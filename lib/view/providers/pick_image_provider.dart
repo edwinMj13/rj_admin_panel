@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:project_rj_admin_panel/data/models/brand_model.dart';
 import 'package:project_rj_admin_panel/data/models/storage_image_model.dart';
 import 'package:project_rj_admin_panel/repository/common.dart';
+import 'package:project_rj_admin_panel/services/common_services.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/utils/text_controllers.dart';
 
@@ -23,6 +24,8 @@ class PickImageProvider extends ChangeNotifier {
 
   bool _imageLoading=false;
   bool get imageLoading=>_imageLoading;
+
+  CommonServices commonServices = CommonServices();
 
   //List<PlatformFile>?  get multiple_Files=>_multiple_Files;
 
@@ -47,7 +50,7 @@ class PickImageProvider extends ChangeNotifier {
     _file = null;
   }
 
-  Future<void> pickMultipleImages(String tag, VoidCallback callBack) async {
+  Future<void> pickMultipleImages(String tag, VoidCallback callBack,BuildContext context) async {
     try {
       FilePickerResult? result =
           await FilePicker.platform.pickFiles(allowMultiple: true);
@@ -59,25 +62,32 @@ class PickImageProvider extends ChangeNotifier {
             callBack();
           }
         }
-        _imageLoading=false;
-        if (tag == "update") {
-          _imagesUrl.addAll(await getFirebaseStorageMULTIPLEImageUrl(
-            multiple_Files,
-            productName: productEDITNameController.text,
-          ));
-        } else {
-          _imagesUrl = await getFirebaseStorageMULTIPLEImageUrl(
-            multiple_Files,
-            productName: productNameController.text,
-          );
-        }
         _imageLoading=true;
+        commonServices.loadingDialogShow(context);
+        await _addImages(tag).then((_){
+          _imageLoading=false;
+          commonServices.cancelLoading();
+        });
         //print("result.files ${result.files ?? "ergf"}");
       }
     } catch (e) {
       print("Pick Multiple Image Exception ${e.toString()}");
     }
     notifyListeners();
+  }
+
+  Future<void> _addImages(String tag) async {
+    if (tag == "update") {
+      _imagesUrl.addAll(await getFirebaseStorageMULTIPLEImageUrl(
+        multiple_Files,
+        productName: productEDITNameController.text,
+      ));
+    } else {
+      _imagesUrl = await getFirebaseStorageMULTIPLEImageUrl(
+        multiple_Files,
+        productName: productNameController.text,
+      );
+    }
   }
 
   deleteImageFromMultiple(int index) {

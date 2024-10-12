@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/data/models/brand_model.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/category_provider.dart';
+import 'package:project_rj_admin_panel/view/widgets/empty_data_list_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../repository/common.dart';
@@ -27,11 +28,7 @@ class _BrandsListDataWidget extends State<BrandsListDataWidget> {
   Widget build(BuildContext context) {
     return Consumer<BrandProvider>(
         builder: (context, value, child) {
-          if (value.brandModel == null) {
-            return const Center(child: Text("No Data Available"));
-          }else if (value.brandModel!.isEmpty) {
-            return const Center(child: Text("No Data Available"));
-          } else {
+          if (value.brandModel != null && value.brandModel!.isNotEmpty) {
             return Container(
               margin: const EdgeInsets.all(20),
               width: double.infinity,
@@ -43,6 +40,8 @@ class _BrandsListDataWidget extends State<BrandsListDataWidget> {
               ),
               child: ListItemsTableWidgetBrand(listData: value.brandModel!,),
             );
+          }else{
+            return EmptyDataListWidget();
           }
         }
     );

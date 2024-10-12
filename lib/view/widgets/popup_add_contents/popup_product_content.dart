@@ -2,14 +2,15 @@ import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/data/models/product_model.dart';
-import 'package:project_rj_admin_panel/services/products_services.dart';
+import 'package:project_rj_admin_panel/services/filter_services.dart';
+import 'package:project_rj_admin_panel/services/products_services/products_services.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/category_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/common_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/products_provider.dart';
-import 'package:project_rj_admin_panel/view/widgets/drop_down_widget/dropdown_field_widget.dart';
+import 'package:project_rj_admin_panel/view/widgets/alternative_like_dropdown_but_popup.dart';
 import 'package:project_rj_admin_panel/view/widgets/simple_text_label.dart';
 import 'package:project_rj_admin_panel/repository/common.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
@@ -18,7 +19,6 @@ import 'package:provider/provider.dart';
 import '../../../data/models/storage_image_model.dart';
 import '../../../utils/text_controllers.dart';
 import '../custom_elevated_button.dart';
-import '../drop_down_widget/dropdown_edit_field_widget.dart';
 import '../multiple_images_widget.dart';
 
 class PopupProductContent extends StatefulWidget {
@@ -47,7 +47,14 @@ class _PopupProductContentState extends State<PopupProductContent> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
+      constraints: BoxConstraints(
+        minHeight: size.height * 0.6,
+        maxHeight: size.height * 0.65,
+        minWidth: size.width * 0.5,
+        maxWidth: size.width * 0.6,
+      ),
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -56,13 +63,14 @@ class _PopupProductContentState extends State<PopupProductContent> {
       ),
       child: Form(
         key: productServices.formKeyProductAdd,
-       child:_textFieldContent(context),
+        child: _textFieldContent(context),
       ),
     );
   }
 
   Widget _textFieldContent(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SimpleTextLabel(
           controller: productNameController,
@@ -85,61 +93,59 @@ class _PopupProductContentState extends State<PopupProductContent> {
 
   Row _actionButtonSection(BuildContext context) {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Elev_Button(
-            onPressed: () => productServices.cancelPopup(context),
-            borderColor: primaryColor,
-            buttonBackground: secondaryColor,
-            textColor: primaryColor,
-            text: 'Cancel',
-          ),
-          Elev_Button(
-            onPressed: () async {
-              productServices.checkAndAdd(context);
-            },
-            buttonBackground: primaryColor,
-            textColor: secondaryColor,
-            text: 'Add',
-          ),
-        ],
-      );
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Elev_Button(
+          onPressed: () => productServices.cancelPopup(context),
+          borderColor: primaryColor,
+          buttonBackground: secondaryColor,
+          textColor: primaryColor,
+          text: 'Cancel',
+        ),
+        Elev_Button(
+          onPressed: () async {
+            productServices.checkAndAdd(context);
+          },
+          buttonBackground: primaryColor,
+          textColor: secondaryColor,
+          text: 'Add',
+        ),
+      ],
+    );
   }
 
   Row _brand_category_sub_section() {
     return Row(
-        children: [
-          Consumer<CommonProvider>(
-            builder: (context, value, _) {
-              return Expanded(
-                  child: DropDownFormWidget(
-                items: value.brandsNames!,
-                label: "Select Brand",
-              ));
-            },
-          ),
-          sizedWidth10,
-          Consumer<CommonProvider>(
-            builder: (context, value, _) {
-              return Expanded(
-                  child: DropDownFormWidget(
-                items: value.categoryNames!,
-                label: "Select Category",
-              ));
-            },
-          ),
-          sizedWidth10,
-          Consumer<CommonProvider>(
-            builder: (context, value, _) {
-              return Expanded(
-                  child: DropDownFormWidget(
-                    items: value.subListProducts,
-                    label: "Select Sub-Category",
-                  ));
-            },
-          ),
-        ],
-      );
+      children: [
+        Expanded(
+            child: AlternativeForDropDown(
+          label: "Brand",
+              listenable: FilterServices.brandNotifier,
+        )),
+        sizedWidth10,
+        Expanded(
+            child: AlternativeForDropDown(
+          label: "Category",
+              listenable: FilterServices.categoryNotifier,
+        )),
+        sizedWidth10,
+        Expanded(
+            child: _listenableSubcategoryWIdget()),
+      ],
+    );
+  }
+
+  ValueListenableBuilder _listenableSubcategoryWIdget() {
+    return ValueListenableBuilder(
+      valueListenable: FilterServices.subCategoryListNotifier,
+      builder: (context,snap,_) {
+        return AlternativeForDropDown(
+            label: "Sub-Category",
+                listenable: FilterServices.subCategoryNotifier,
+          subList: snap,
+          );
+      }
+    );
   }
 
   Row _variant() {
@@ -233,7 +239,9 @@ class _PopupProductContentState extends State<PopupProductContent> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text("Add Images (Min. 2 images and Max. 6 images)"),
-              MultipleImagesWidget(tag: "add",),
+              MultipleImagesWidget(
+                tag: "add",
+              ),
             ],
           )),
         ],

@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../repository/common.dart';
 import 'data_table_widgets/list_items_table_data_brand_widget.dart';
+import 'empty_data_list_widget.dart';
 
 class ProductListDataWidget extends StatefulWidget {
   const ProductListDataWidget({super.key, });
@@ -32,11 +33,7 @@ class _ProductListDataWidget extends State<ProductListDataWidget> {
     return Consumer<ProductsProvider>(
         builder: (context, value, child) {
            print("Products ProductListDataWidget${value.productsList}");
-          if (value.productsList == null) {
-            return const Center(child: Text("No Data Available"));
-          }else if (value.productsList!.isEmpty) {
-            return const Center(child: Text("No Data Available"));
-          }  else {
+          if (value.productsList != null && value.productsList!.isNotEmpty) {
             return Container(
               margin: const EdgeInsets.all(20),
               width: double.infinity,
@@ -48,6 +45,8 @@ class _ProductListDataWidget extends State<ProductListDataWidget> {
               ),
               child: ListItemsTableWidgetProducts(listData: value.productsList!,),
             );
+          }else{
+            return EmptyDataListWidget();
           }
         }
     );

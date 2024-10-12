@@ -10,31 +10,28 @@ class SummaryCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size=MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.only(left: 10.0),
-      child: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              customSummaryCard(size,0, summaryCardData),
-              sizedHeight20,
-              customSummaryCard(size,2, summaryCardData),
-            ],
-          ),
-          sizedWidth20,
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              customSummaryCard(size,1, summaryCardData),
-              sizedHeight20,
-              customSummaryCard(size,3, summaryCardData),
-            ],
-          ),
-        ],
-      ),
+    return Row(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            customSummaryCard(size,0, summaryCardData),
+            sizedHeight20,
+            customSummaryCard(size,2, summaryCardData),
+          ],
+        ),
+        sizedWidth20,
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            customSummaryCard(size,1, summaryCardData),
+            sizedHeight20,
+            customSummaryCard(size,3, summaryCardData),
+          ],
+        ),
+      ],
     );
   }
 

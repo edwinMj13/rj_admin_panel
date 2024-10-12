@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../repository/common.dart';
 import 'data_table_widgets/list_items_table_data_brand_widget.dart';
+import 'empty_data_list_widget.dart';
 
 class CouponListDataWidget extends StatefulWidget {
   const CouponListDataWidget({super.key, });
@@ -30,11 +31,7 @@ class _CouponListDataWidget extends State<CouponListDataWidget> {
     return Consumer<CouponProvider>(
         builder: (context, value, child) {
          // print("Coupon Provider${value.couponList}");
-          if (value.couponList == null) {
-            return const Center(child: Text("No Data Available"));
-          }else if (value.couponList!.isEmpty) {
-            return const Center(child: Text("No Data Available"));
-          }  else {
+          if (value.couponList != null && value.couponList!.isNotEmpty) {
             return Container(
               margin: const EdgeInsets.all(20),
               width: double.infinity,
@@ -46,6 +43,8 @@ class _CouponListDataWidget extends State<CouponListDataWidget> {
               ),
               child: ListItemsTableWidgetCoupon(listData: value.couponList!,),
             );
+          }else{
+            return EmptyDataListWidget();
           }
         }
     );

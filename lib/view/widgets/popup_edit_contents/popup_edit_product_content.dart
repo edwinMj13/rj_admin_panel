@@ -2,14 +2,15 @@ import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/data/models/product_model.dart';
-import 'package:project_rj_admin_panel/services/products_services.dart';
+import 'package:project_rj_admin_panel/services/filter_services.dart';
+import 'package:project_rj_admin_panel/services/products_services/products_services.dart';
+import 'package:project_rj_admin_panel/services/products_services/text_field_actions.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/category_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/common_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/products_provider.dart';
-import 'package:project_rj_admin_panel/view/widgets/drop_down_widget/dropdown_field_widget.dart';
 import 'package:project_rj_admin_panel/view/widgets/simple_text_label.dart';
 import 'package:project_rj_admin_panel/repository/common.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
@@ -19,7 +20,6 @@ import '../../../data/models/storage_image_model.dart';
 import '../../../utils/text_controllers.dart';
 import '../alternative_like_dropdown_but_popup.dart';
 import '../custom_elevated_button.dart';
-import '../drop_down_widget/dropdown_edit_field_widget.dart';
 import '../multiple_images_widget.dart';
 
 class PopupEDITProductContent extends StatefulWidget {
@@ -39,16 +39,23 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
   @override
   void initState() {
     // TODO: implement initState
-    context.read<ProductsProvider>().getImagesForUpdate(
-        widget.model!.imagesList);
+    // context.read<ProductsProvider>().getImagesForUpdate(
+    //     widget.model!.imagesList);
     context.read<PickImageProvider>().addToImages(widget.model!.imagesList);
-    ProductServices.setValuesToFields(widget.model!);
+    TextFieldActions.setValuesToFields(widget.model!);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
+      constraints: BoxConstraints(
+        minHeight: size.height * 0.6,
+        maxHeight: size.height * 0.65,
+        minWidth: size.width * 0.5,
+        maxWidth: size.width * 0.6,
+      ),
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -56,6 +63,7 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _textFieldContent(context),
           sizedHeight20,
@@ -117,14 +125,14 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
   Row _brand_category_sub_Section() {
     return Row(
           children: [
-            Expanded(child: AlternativeForDropDown(label: 'Brand',listenable: ProductServices.brandNotifier,)),
+            Expanded(child: AlternativeForDropDown(label: 'Brand',listenable: FilterServices.brandNotifier,)),
             sizedWidth20,
-            Expanded(child: AlternativeForDropDown(label: 'Category',listenable: ProductServices.categoryNotifier,)),
+            Expanded(child: AlternativeForDropDown(label: 'Category',listenable: FilterServices.categoryNotifier,)),
             sizedWidth20,
             Expanded(child: ValueListenableBuilder(
-              valueListenable: ProductServices.subCategoryListNotifier,
+              valueListenable: FilterServices.subCategoryListNotifier,
               builder: (context,snap,_) {
-                return AlternativeForDropDown(label: 'Sub-Category',listenable: ProductServices.subCategoryNotifier,list: snap,);
+                return AlternativeForDropDown(label: 'Sub-Category',listenable: FilterServices.subCategoryNotifier,subList: snap,);
               }
             )),
             /*Consumer<CommonProvider>(

@@ -71,4 +71,11 @@ class CouponServices {
     clearFields(context);
     context.read<CouponProvider>().getCouponDetailsProvider();
   }
+
+  updateStatus(CouponModel model,BuildContext context){
+    context.read<CouponProvider>().editCoupon(model.firebaseCollectionID, model).then((_){
+      context.read<CouponProvider>().getCouponDetailsProvider();
+      Navigator.of(context).pop();
+    });
+  }
 }

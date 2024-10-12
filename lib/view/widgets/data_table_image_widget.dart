@@ -14,7 +14,7 @@ class DataTableIMAGEWidget extends StatelessWidget {
           height: 40,
           width: 40,
           decoration: BoxDecoration(
-            color: Colors.white70,
+            color: Colors.white12,
             borderRadius: BorderRadius.circular(100),
           ),
           child: FadeInImage(
