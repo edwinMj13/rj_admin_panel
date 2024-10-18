@@ -4,6 +4,7 @@ import 'package:project_rj_admin_panel/data/raw%20data/fl_data.dart';
 import 'package:project_rj_admin_panel/view/pages/category_screen.dart';
 import 'package:project_rj_admin_panel/view/pages/coupon_screen.dart';
 import 'package:project_rj_admin_panel/view/pages/dashboard_screen.dart';
+import 'package:project_rj_admin_panel/view/pages/order_list_screen/orders_list_screen.dart';
 import 'package:project_rj_admin_panel/view/pages/products_screen.dart';
 import 'package:project_rj_admin_panel/view/providers/home_provider.dart';
 import 'package:provider/provider.dart';
@@ -91,6 +92,8 @@ class ContentSection extends StatelessWidget {
         return const BrandsWidgetScreen(title: 'Brands');
       case 4:
         return const CouponScreen(title: 'Coupons');
+      case 5:
+        return const OrdersListScreen(title: 'Orders');
       default:
         return const SizedBox();
     }

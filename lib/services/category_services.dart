@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:project_rj_admin_panel/services/common_services.dart';
 import 'package:project_rj_admin_panel/utils/text_controllers.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class CategoryServices {
 
   final formKeyCategoryAdd = GlobalKey<FormState>();
   final formKeyCategoryUpdate = GlobalKey<FormState>();
+  CommonServices commonServices = CommonServices();
   Uint8List? uintImage;
 
   validateFormAdd() {
@@ -40,6 +42,8 @@ class CategoryServices {
 
   //Add Category
   checkAndAddCategory(String name, BuildContext context) async {
+    commonServices.loadingDialogShow(context);
+
     final subCtaegoryList = context.read<CategoryProvider>().subCategoryChip;
     final categoryId = await createCategoryId();
 
@@ -73,6 +77,7 @@ class CategoryServices {
         .addCategoryDetails(model)
         .then((value) {
       context.read<PickImageProvider>().imageFile != null;
+      commonServices.cancelLoading();
       _contextRefreshCategory(context);
     });
   }
@@ -93,6 +98,8 @@ class CategoryServices {
 
 
   checkAndUpdateCategory(String name, BuildContext context, CategoryModel? model) async {
+    commonServices.loadingDialogShow(context);
+
     final subCategoryList = context.read<CategoryProvider>().subCategoryChip;
 
     if (validateFormUpdate() && uintImage != null) {
@@ -116,6 +123,7 @@ class CategoryServices {
           .updateCategoryDetails(catModel, model.fireID)
           .then((value) {
         context.read<PickImageProvider>().imageFile != null;
+        commonServices.cancelLoading();
         _contextRefreshCategory(context);
       });
     }

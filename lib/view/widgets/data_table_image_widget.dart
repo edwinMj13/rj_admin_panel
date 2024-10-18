@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_rj_admin_panel/view/widgets/place_holder_image_widget.dart';
 
 class DataTableIMAGEWidget extends StatelessWidget {
   const DataTableIMAGEWidget({
@@ -17,16 +18,7 @@ class DataTableIMAGEWidget extends StatelessWidget {
             color: Colors.white12,
             borderRadius: BorderRadius.circular(100),
           ),
-          child: FadeInImage(
-            fadeInDuration: Duration(milliseconds: 500),
-            image: NetworkImage(
-              image,
-            ),
-            placeholder:const AssetImage("assets/image-circle-svgrepo-com.png"),
-            /*imageErrorBuilder: (context, child, loadingProgress) {
-              return CommonServices.showPlaceHolderImageinDataTable(loadingProgress, child);
-            }*/
-          ),
+          child: PlaceHolderImageWidget(image: image,),
         )
       /*FadeInImage(
      image: NetworkImage(
@@ -40,3 +32,5 @@ class DataTableIMAGEWidget extends StatelessWidget {
     );
   }
 }
+
+

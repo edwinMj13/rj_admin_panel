@@ -109,11 +109,7 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
               text: 'Cancel',
             ),
             Elev_Button(
-              onPressed: () async {
-                List<StorageImageModel> alreadyImage = getImageListFromDynamic(widget.model!.imagesList);
-                print("alreadyImage From Model $alreadyImage");
-                productServices.checkAndUpdate(context, widget.model,alreadyImage);
-              },
+              onPressed: () =>productServices.checkAndUpdate(context, widget.model),
               buttonBackground: primaryColor,
               textColor: secondaryColor,
               text: 'Update',
@@ -191,6 +187,13 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
   Row _price_quantity() {
     return Row(
       children: [
+        Expanded(
+            child: SimpleTextLabel(
+              controller: productEDITMrpController,
+              labelText: "Mrp",
+              errorLabel: "Enter Mrp",
+            )),
+        sizedWidth10,
         Expanded(
           child: SimpleTextLabel(
             controller: productPriceController,

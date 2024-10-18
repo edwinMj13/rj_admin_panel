@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../view/providers/common_provider.dart';
 
 class CommonServices {
-  BuildContext? loadingProgress;
+   BuildContext? loadingProgress;
 
   static Widget showPlaceHolderImageinDataTable(
       ImageChunkEvent? loadingProgress, Widget child) {
@@ -23,8 +23,8 @@ class CommonServices {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) {
-          loadingProgress = context;
+        builder: (contextQ) {
+          loadingProgress = contextQ;
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -34,4 +34,6 @@ class CommonServices {
   cancelLoading() {
     Navigator.of(loadingProgress!).pop();
   }
+
+
 }

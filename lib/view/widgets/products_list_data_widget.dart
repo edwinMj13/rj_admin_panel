@@ -13,14 +13,15 @@ import 'data_table_widgets/list_items_table_data_brand_widget.dart';
 import 'empty_data_list_widget.dart';
 
 class ProductListDataWidget extends StatefulWidget {
-  const ProductListDataWidget({super.key, });
+  const ProductListDataWidget({
+    super.key,
+  });
 
   @override
   State<ProductListDataWidget> createState() => _ProductListDataWidget();
 }
 
 class _ProductListDataWidget extends State<ProductListDataWidget> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -30,25 +31,26 @@ class _ProductListDataWidget extends State<ProductListDataWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProductsProvider>(
-        builder: (context, value, child) {
-           print("Products ProductListDataWidget${value.productsList}");
-          if (value.productsList != null && value.productsList!.isNotEmpty) {
-            return Container(
-              margin: const EdgeInsets.all(20),
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0)),
-              ),
-              child: ListItemsTableWidgetProducts(listData: value.productsList!,),
-            );
-          }else{
-            return EmptyDataListWidget();
-          }
-        }
-    );
+    final size = MediaQuery.of(context).size;
+    return Consumer<ProductsProvider>(builder: (context, value, child) {
+      print("Products ProductListDataWidget${value.productsList}");
+      if (value.productsList != null && value.productsList!.isNotEmpty) {
+        return Container(
+          margin: const EdgeInsets.all(20),
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            color: Colors.blueGrey,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0)),
+          ),
+          child: ListItemsTableWidgetProducts(
+            listData: value.productsList!,
+          ),
+        );
+      } else {
+        return const EmptyDataListWidget();
+      }
+    });
   }
 }

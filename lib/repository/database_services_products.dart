@@ -4,7 +4,7 @@ import 'package:project_rj_admin_panel/data/models/product_model.dart';
 class DatabaseServicesProducts {
   final firebase = FirebaseFirestore.instance;
 
-  uploadProductData(ProductModel model) async {
+  Future<void> uploadProductData(ProductModel model) async {
     try {
       await firebase
           .collection("Products")
@@ -18,6 +18,7 @@ class DatabaseServicesProducts {
           //image: model.image,
           itemName: model.itemName,
           category: model.category,
+          itemMrp: model.itemMrp,
           productId: nodeId.id,
           price: model.price,
           status: model.status,
@@ -49,6 +50,7 @@ class DatabaseServicesProducts {
                 mainImage: e.get("mainImage"),
                 // image: e.get("image"),
                 itemName: e.get("itemName"),
+                itemMrp: e.get("itemMrp"),
                 productId: e.get("productId"),
                 status: e.get("status"),
                 category: e.get("category"),

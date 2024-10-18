@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:project_rj_admin_panel/view/pages/order_list_screen/widgets/popup_order_details.dart';
 import 'package:project_rj_admin_panel/view/widgets/popup_add_contents/popup_brand_content.dart';
 import 'package:project_rj_admin_panel/view/widgets/popup_add_contents/popup_category_content.dart';
 import 'package:project_rj_admin_panel/view/widgets/popup_add_contents/popup_coupon_content.dart';
@@ -58,6 +59,8 @@ class PopupCardTitleImageWidget extends StatelessWidget {
         return PopupProductContent(title: title);
         case "Edit Product":
           return PopupEDITProductContent(title: title,model:model);
+      case "Order Details":
+        return PopupOrderDetails(title: title,orderModel:model, );
       // case "Order Details":
       default:
         return const SizedBox();

@@ -103,9 +103,7 @@ class _PopupProductContentState extends State<PopupProductContent> {
           text: 'Cancel',
         ),
         Elev_Button(
-          onPressed: () async {
-            productServices.checkAndAdd(context);
-          },
+          onPressed: () =>productServices.checkAndAdd(context),
           buttonBackground: primaryColor,
           textColor: secondaryColor,
           text: 'Add',
@@ -172,6 +170,13 @@ class _PopupProductContentState extends State<PopupProductContent> {
   Row _price_quantity() {
     return Row(
       children: [
+        Expanded(
+            child: SimpleTextLabel(
+              controller: productMrpController,
+              labelText: "Mrp",
+              errorLabel: "Enter Mrp",
+            )),
+        sizedWidth10,
         Expanded(
           child: SimpleTextLabel(
             controller: productPriceController,

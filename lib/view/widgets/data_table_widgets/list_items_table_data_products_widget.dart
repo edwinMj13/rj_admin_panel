@@ -34,6 +34,7 @@ class ListItemsTableWidgetProducts extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: DataTable(
+
         columns: _createColumn(),
         rows: _createRow(listData, context),
       ),
@@ -98,6 +99,7 @@ class ListItemsTableWidgetProducts extends StatelessWidget {
                 imagesList: getImageListFromDynamic(e.imagesList),
                 itemName: e.itemName,
                 category: e.category,
+                itemMrp: e.itemMrp,
                 itemBrand: e.itemBrand,
                 price: e.price,
                 sellingPrize: e.sellingPrize,

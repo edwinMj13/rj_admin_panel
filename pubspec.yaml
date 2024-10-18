@@ -42,6 +42,8 @@ dependencies:
   firebase_storage: ^12.2.0
   file_picker: ^8.0.6
   flutter_svg: ^2.0.10+1
+  flutter_image_stack: ^0.0.7
+  dotted_line: ^3.2.2
 
 dev_dependencies:
   flutter_test:

@@ -8,7 +8,7 @@ import '../../utils/text_controllers.dart';
 import '../filter_services.dart';
 
  class TextFieldActions{
-  static clearTextsUpdate(BuildContext context) {
+  static clearProductEditTextsUpdate(BuildContext context) {
     productEDITDescriptionController.clear();
     productEDITSubCategoryController.clear();
     productEDITQuantityController.clear();
@@ -45,5 +45,10 @@ import '../filter_services.dart';
     productNameController.text = model.itemName;
     FilterServices.brandNotifier.value = model.itemBrand;
     FilterServices.categoryNotifier.value = model.category;
+  }
+
+  static clearBrandTextADDUpdate(){
+    popupEDITBrandNameController.clear();
+    popupBrandNameController.clear();
   }
 }

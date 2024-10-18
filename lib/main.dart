@@ -7,6 +7,7 @@ import 'package:project_rj_admin_panel/view/providers/category_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/common_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/coupon_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/home_provider.dart';
+import 'package:project_rj_admin_panel/view/providers/order_list_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/products_provider.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create:(context) =>CouponProvider()),
         ChangeNotifierProvider(create:(context) =>ProductsProvider()),
         ChangeNotifierProvider(create:(context) =>CommonProvider()),
+        ChangeNotifierProvider(create:(context) =>OrderListProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

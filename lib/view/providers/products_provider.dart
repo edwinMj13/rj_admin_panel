@@ -9,11 +9,11 @@ class ProductsProvider extends ChangeNotifier {
   final database = DatabaseServicesProducts();
 
 
-  Future<void> addProductData(ProductModel model) async {
-    database.uploadProductData(model);
+  Future<void> addProductData(ProductModel model, VoidCallback callback) async {
+    await database.uploadProductData(model).then((_)=> callback());
   }
-  Future<void> updateProductData(ProductModel model,String firebaseNodeId) async {
-    database.updateProductData(firebaseNodeId,model);
+  Future<void> updateProductData(ProductModel model,String firebaseNodeId, VoidCallback callback) async {
+   await database.updateProductData(firebaseNodeId,model).then((_)=>callback());
   }
 
   getProductsDataProvider() async {

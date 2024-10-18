@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/services/common_services.dart';
+import 'package:project_rj_admin_panel/services/products_services/text_field_actions.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/utils/text_controllers.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +44,7 @@ class BrandServices {
   }
 
   checkAndAddBrand(String name, BuildContext context) async {
+    commonServices.loadingDialogShow(context);
     if (validateAddForm() &&
         context.read<PickImageProvider>().imageFile!.bytes != null) {
       final image = context.read<PickImageProvider>().imageFile!.bytes;
@@ -59,17 +61,19 @@ class BrandServices {
       );
       await context
           .read<BrandProvider>()
-          .uploadBrandDetails(model, () => _contextRefresh(context));
+          .uploadBrandDetails(model).then((_){
+        commonServices.cancelLoading();
+        _contextRefresh(context);
+      });
     } else if (context.read<PickImageProvider>().imageFile == null) {
       showSnackbar(context, "Please Add Icon");
     }
   }
 
   clearFields(BuildContext context) {
-    popupEDITBrandNameController.clear();
-    popupBrandNameController.clear();
-    context.read<PickImageProvider>().fileSetToNull();
     Navigator.pop(context);
+    TextFieldActions.clearBrandTextADDUpdate();
+    context.read<PickImageProvider>().fileSetToNull();
   }
 
   _contextRefresh(BuildContext context) {

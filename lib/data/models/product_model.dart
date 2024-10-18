@@ -10,6 +10,7 @@ class ProductModel {
   final String category;
   final String? subCategory;
   final String price;
+  final String itemMrp;
   final String sellingPrize;
   final String stock;
   final String status;
@@ -25,6 +26,7 @@ class ProductModel {
     required this.category,
     required this.itemBrand,
     this.subCategory,
+    required this.itemMrp,
     required this.price,
     required this.sellingPrize,
     required this.productId,
@@ -42,6 +44,7 @@ class ProductModel {
       "category":category,
       "subCategory":subCategory,
       "price":price,
+      "itemMrp":itemMrp,
       "sellingPrize":sellingPrize,
       "mainImage":mainImage,
       "status":status,

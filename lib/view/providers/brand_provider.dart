@@ -22,8 +22,8 @@ class BrandProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  uploadBrandDetails(BrandModel model,VoidCallback callBack) async {
-    await dbSevices.addBrandDetails(model).then((_)=>callBack());
+  Future<void> uploadBrandDetails(BrandModel model) async {
+    await dbSevices.addBrandDetails(model);
   }
 
   editBrandDetails(

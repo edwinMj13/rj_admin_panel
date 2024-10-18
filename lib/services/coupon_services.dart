@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_rj_admin_panel/services/common_services.dart';
 import 'package:project_rj_admin_panel/utils/text_controllers.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +10,7 @@ class CouponServices {
 
   final formKeycouponAdd = GlobalKey<FormState>();
   final formKeycouponUpdate = GlobalKey<FormState>();
-
+  CommonServices commonServices = CommonServices();
   validateAdd() {
     if (formKeycouponAdd.currentState!.validate()) {
       return true;
@@ -36,22 +37,23 @@ class CouponServices {
 
 
   checkCouponAdd(CouponModel model, BuildContext context) async {
+    commonServices.loadingDialogShow(context);
+
     if (validateAdd()) {
       await context.read<CouponProvider>().addCoupons(model).then((_) {
-        popupCampaignNameController.clear();
-        popupDiscountController.clear();
-        popupCodeController.clear();
+        commonServices.cancelLoading();
+
         couponScreenRefresh(context);
       });
     }
   }
 
   checkCouponUpdate(CouponModel model, BuildContext context) async {
+    commonServices.loadingDialogShow(context);
+
     if (validateUpdate()) {
       await context.read<CouponProvider>().editCoupon(model.firebaseCollectionID,model).then((_){
-        popupEDITCampaignNameController.clear();
-        popupEDITDiscountController.clear();
-        popupEDITCodeController.clear();
+        commonServices.cancelLoading();
         couponScreenRefresh(context);
       });
     }
