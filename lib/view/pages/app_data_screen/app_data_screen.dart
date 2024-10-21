@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_rj_admin_panel/data/models/product_model.dart';
+import 'package:project_rj_admin_panel/view/pages/app_data_screen/widgets/add_banner_image_widget.dart';
 import 'package:project_rj_admin_panel/view/providers/app_data_provider.dart';
 import 'package:project_rj_admin_panel/services/products_services/products_services.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
@@ -36,29 +37,7 @@ class _AppDataScreenState extends State<AppDataScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _setOfferSection(),
-            /* Container(
-              height: 350,
-              width: 350,
-              padding: EdgeInsets.all(20),
-              decoration: const BoxDecoration(color: Colors.grey),
-              child: Column(
-                children: [
-                  const Text("Grand Items"),
-                  Row(
-                    children: [
-                      const Text("Search Product"),
-                      SizedBox(
-                        width: 150,
-                        child: TextField(
-                          controller: appDataProductSearchController,
-                          decoration: InputDecoration(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),*/
+            AddBannerImageWidget(),
           ],
         )
       ],
@@ -142,7 +121,7 @@ class _AppDataScreenState extends State<AppDataScreen> {
                         },
                         child: Text(
                           value[index].itemName,
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       );
                     },

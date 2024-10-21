@@ -29,6 +29,11 @@ class PickImageProvider extends ChangeNotifier {
 
   //List<PlatformFile>?  get multiple_Files=>_multiple_Files;
 
+  List<Uint8List> bannerImages =[];
+
+  List<String>? _bannerShowImages =[];
+  List<String>? get bannerShowImages => _bannerShowImages;
+
   Future<void> pickImage(String tag, VoidCallback callBack) async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -48,6 +53,10 @@ class PickImageProvider extends ChangeNotifier {
 
   fileSetToNull() {
     _file = null;
+  }
+
+  getBannerImagesToShow(List<String> images){
+    _bannerShowImages = images;
   }
 
   Future<void> pickMultipleImages(String tag, VoidCallback callBack,BuildContext context) async {
@@ -97,6 +106,7 @@ class PickImageProvider extends ChangeNotifier {
 
   addToImages(List<dynamic> images){
     _imagesUrl= images.isNotEmpty ?getImageListFromDynamic(images) : [];
+    print("_imageURL $_imagesUrl");
   }
 
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/firebase_options.dart';
 import 'package:project_rj_admin_panel/view/pages/home_screen.dart';
 import 'package:project_rj_admin_panel/view/providers/app_data_provider.dart';
+import 'package:project_rj_admin_panel/view/providers/banner_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/category_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/common_provider.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create:(context) =>CommonProvider()),
         ChangeNotifierProvider(create:(context) =>OrderListProvider()),
         ChangeNotifierProvider(create:(context) =>AppDataProvider()),
+        ChangeNotifierProvider(create:(context) =>BannerProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

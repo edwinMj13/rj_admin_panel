@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:project_rj_admin_panel/data/models/banner_model.dart';
 import 'package:project_rj_admin_panel/data/models/brand_model.dart';
 import 'package:project_rj_admin_panel/data/models/storage_image_model.dart';
 
@@ -50,4 +51,20 @@ Future<int> createCategoryId() async {
   }
   //print(model.last);
   return id;
+}
+
+saveBannerImages(BannerModel bannerModel) async {
+  //if(tag=="add") {
+    await FirebaseFirestore.instance.collection('Banner').doc("Details").set(bannerModel.toMap());
+  // }else{
+  //   FirebaseFirestore.instance.collection('Banner').doc(bannerModel.nodeId).update(
+  //       bannerModel.toMap());
+  // }
+}
+
+Future<BannerModel> getBannerImages() async {
+  final data = await FirebaseFirestore.instance.collection('Banner').doc("Details").get();
+  final dataMap = data.data();
+  final lastData = BannerModel(bannerImages: dataMap!["bannerImages"],nodeId:dataMap["nodeId"]);
+  return lastData;
 }

@@ -26,10 +26,15 @@ class ListItemsTableWidgetCoupon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: DataTable(
-        columns: _createColumn(),
-        rows: _createRow(listData, context),
+      scrollDirection: Axis.horizontal,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width*0.80
+        ),
+        child: DataTable(
+          columns: _createColumn(),
+          rows: _createRow(listData, context),
+        ),
       ),
     );
   }

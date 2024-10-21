@@ -37,6 +37,12 @@ class _OrdersListDataWidget extends State<OrdersListDataWidget> {
             return Container(
               margin: const EdgeInsets.all(20),
               width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Colors.blueGrey,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0)),
+              ),
               child: ListItemsTableDataOrderListWidget(listData: value.orderList,),
             );
           }else{

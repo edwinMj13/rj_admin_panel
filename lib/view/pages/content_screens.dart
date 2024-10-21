@@ -49,7 +49,7 @@ class ContentSection extends StatelessWidget {
                         BorderRadius.all( Radius.circular(10.0)),
                   ),
                   child: //DashBoardWidgetScreen(),
-                      getContentScreen(value.index),
+                      SingleChildScrollView(child: getContentScreen(value.index)),
                 );
               },
             ),

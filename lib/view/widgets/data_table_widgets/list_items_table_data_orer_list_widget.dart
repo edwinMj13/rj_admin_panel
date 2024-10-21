@@ -32,16 +32,16 @@ class ListItemsTableDataOrderListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //print("ListItemsTableDataOrderListWidget  -  $listData");
     return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: DataTable(
-        showCheckboxColumn: false,
-        decoration: const BoxDecoration(
-          color: Colors.teal,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+      scrollDirection: Axis.horizontal,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width*0.80
         ),
-        columns: _createColumn(),
-        rows: _createRow(listData, context),
+        child: DataTable(
+          showCheckboxColumn: false,
+          columns: _createColumn(),
+          rows: _createRow(listData, context),
+        ),
       ),
     );
   }
