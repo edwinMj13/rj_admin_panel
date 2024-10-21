@@ -1,14 +1,17 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/data/raw%20data/fl_data.dart';
+import 'package:project_rj_admin_panel/view/pages/app_data_screen/app_data_screen.dart';
 import 'package:project_rj_admin_panel/view/pages/category_screen.dart';
 import 'package:project_rj_admin_panel/view/pages/coupon_screen.dart';
 import 'package:project_rj_admin_panel/view/pages/dashboard_screen.dart';
 import 'package:project_rj_admin_panel/view/pages/order_list_screen/orders_list_screen.dart';
 import 'package:project_rj_admin_panel/view/pages/products_screen.dart';
 import 'package:project_rj_admin_panel/view/providers/home_provider.dart';
+import 'package:project_rj_admin_panel/view/widgets/top_profile_bar_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../../config/color.dart';
 import '../../data/raw data/summary_card_data.dart';
 import '../../utils/constants.dart';
 import '../widgets/summary_card_widget.dart';
@@ -23,60 +26,34 @@ class ContentSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        decoration: const BoxDecoration(
-          color: secondaryColor,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            _topBar(),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Consumer<HomeProvider>(
-                builder: (context, value, child) {
-                  //bool isVisible=false;
-                  return Container(
-
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      color: lightGrey,
-                      borderRadius:
-                          BorderRadius.all( Radius.circular(10.0)),
-                    ),
-                    child: //DashBoardWidgetScreen(),
-                        getContentScreen(value.index),
-                  );
-                },
-              ),
-            )
-          ],
-        ),
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        const TopProfileBarWidget(),
+        Expanded(child: _selectedContent()),
+      ],
     );
   }
 
-  Padding _topBar() {
+  Widget _selectedContent() {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-      child: Container(
-        height: 60,
-        decoration: const BoxDecoration(
-          color: secondaryColor,
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(),
-            CircleAvatar(
-              radius: 20,
-              child: Icon(Icons.person),
-            )
-          ],
-        ),
-      ),
-    );
+            padding: const EdgeInsets.all(10.0),
+            child: Consumer<HomeProvider>(
+              builder: (context, value, child) {
+                //bool isVisible=false;
+                return Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                    color: lightGrey,
+                    borderRadius:
+                        BorderRadius.all( Radius.circular(10.0)),
+                  ),
+                  child: //DashBoardWidgetScreen(),
+                      getContentScreen(value.index),
+                );
+              },
+            ),
+          );
   }
 
   Widget getContentScreen(int index) {
@@ -94,6 +71,8 @@ class ContentSection extends StatelessWidget {
         return const CouponScreen(title: 'Coupons');
       case 5:
         return const OrdersListScreen(title: 'Orders');
+      case 6:
+        return  AppDataScreen();
       default:
         return const SizedBox();
     }

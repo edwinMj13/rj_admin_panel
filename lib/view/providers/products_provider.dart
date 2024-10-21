@@ -6,6 +6,9 @@ class ProductsProvider extends ChangeNotifier {
   List<ProductModel>? _productsList;
   List<ProductModel>? get productsList => _productsList;
 
+  List<ProductModel>? _filteredProductsList;
+  List<ProductModel>? get filteredProductsList => _filteredProductsList;
+
   final database = DatabaseServicesProducts();
 
 
@@ -24,5 +27,6 @@ class ProductsProvider extends ChangeNotifier {
     await database.deleteProduct(nodeId).then((_)=>getProductsDataProvider());
     getProductsDataProvider();
   }
+
 
 }

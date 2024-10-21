@@ -17,6 +17,7 @@ import 'package:project_rj_admin_panel/view/widgets/simple_icon_widget.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../../../config/color.dart';
 import '../../../data/raw data/common_data.dart';
 import '../alternative_like_dropdown_but_popup.dart';
 import '../data_table_image_widget.dart';
@@ -34,7 +35,6 @@ class ListItemsTableWidgetProducts extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: DataTable(
-
         columns: _createColumn(),
         rows: _createRow(listData, context),
       ),
@@ -101,6 +101,9 @@ class ListItemsTableWidgetProducts extends StatelessWidget {
                 category: e.category,
                 itemMrp: e.itemMrp,
                 itemBrand: e.itemBrand,
+                itemAddedDate: e.itemAddedDate,
+                offerPercent: e.offerPercent,
+                offerAmount: e.offerAmount,
                 price: e.price,
                 sellingPrize: e.sellingPrize,
                 productId: e.productId,

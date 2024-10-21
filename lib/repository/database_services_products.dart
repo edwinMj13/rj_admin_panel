@@ -15,8 +15,11 @@ class DatabaseServicesProducts {
           mainImage: model.mainImage,
           imagesList: model.imagesList,
           firebaseNodeId: nodeId.id,
+          offerPercent: model.offerPercent,
+          offerAmount: model.offerAmount,
           //image: model.image,
           itemName: model.itemName,
+          itemAddedDate: model.itemAddedDate,
           category: model.category,
           itemMrp: model.itemMrp,
           productId: nodeId.id,
@@ -47,9 +50,12 @@ class DatabaseServicesProducts {
                 imagesList: e.get("imagesList"),
                 itemBrand: e.get("itemBrand"),
                 firebaseNodeId: e.get("firebaseNodeId"),
+                offerPercent: e.get("offerPercent"),
+                offerAmount: e.get("offerAmount"),
                 mainImage: e.get("mainImage"),
                 // image: e.get("image"),
                 itemName: e.get("itemName"),
+                itemAddedDate: e.get("itemAddedDate"),
                 itemMrp: e.get("itemMrp"),
                 productId: e.get("productId"),
                 status: e.get("status"),
@@ -71,6 +77,8 @@ class DatabaseServicesProducts {
     try {
       await firebase.collection("Products").doc(nodeId).update(model.toMap());
     } catch (e) {
+      print("updateProductData NodeID $nodeId\n"
+          "${model.productId}");
       print("updateProductData Exception - ${e.toString()}");
     }
   }

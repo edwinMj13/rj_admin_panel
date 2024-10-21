@@ -13,6 +13,8 @@ import 'package:project_rj_admin_panel/view/widgets/popup_edit_contents/popup_ed
 import 'package:project_rj_admin_panel/view/widgets/popup_edit_contents/popup_edit_product_content.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
 
+import '../../config/color.dart';
+
 
 class PopupCardTitleImageWidget extends StatelessWidget {
   final String title;

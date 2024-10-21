@@ -16,8 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -26,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
@@ -34,21 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 2,
-            child: SizedBox(
-              child: SideBarWidget(),
-            ),
+          SizedBox(
+            width: 250,
+            child: SideBarWidget(),
           ),
           Container(
             height: double.infinity,
             width: 0.2,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.grey,
             ),
           ),
           Expanded(
-            flex: 10,
             child: ContentSection(),
           ),
         ],

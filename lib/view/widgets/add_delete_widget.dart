@@ -5,6 +5,7 @@ import 'package:project_rj_admin_panel/view/providers/home_provider.dart';
 import 'package:project_rj_admin_panel/view/widgets/popupcard_title_image_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../../config/color.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/constants.dart';
 import 'custom_icon_button.dart';

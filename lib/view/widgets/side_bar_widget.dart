@@ -5,6 +5,8 @@ import 'package:project_rj_admin_panel/view/providers/home_provider.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../../config/color.dart';
+
 class SideBarWidget extends StatelessWidget {
   SideBarWidget({super.key});
 

@@ -14,6 +14,7 @@ import 'package:project_rj_admin_panel/repository/common.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:provider/provider.dart';
 
+import '../../../config/color.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/text_controllers.dart';
 import '../../providers/brand_provider.dart';

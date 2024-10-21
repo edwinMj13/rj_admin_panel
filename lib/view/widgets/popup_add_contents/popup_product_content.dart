@@ -16,6 +16,7 @@ import 'package:project_rj_admin_panel/repository/common.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../../../config/color.dart';
 import '../../../data/models/storage_image_model.dart';
 import '../../../utils/text_controllers.dart';
 import '../custom_elevated_button.dart';
@@ -100,7 +101,7 @@ class _PopupProductContentState extends State<PopupProductContent> {
           borderColor: primaryColor,
           buttonBackground: secondaryColor,
           textColor: primaryColor,
-          text: 'Cancel',
+          text: 'Cacel',
         ),
         Elev_Button(
           onPressed: () =>productServices.checkAndAdd(context),

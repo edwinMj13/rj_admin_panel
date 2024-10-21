@@ -12,7 +12,11 @@ class TitleContentNameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: Text(title,style: const TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
+      child: Row(
+        children: [
+          Text(title,style: const TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
+        ],
+      ),
     );
   }
 }

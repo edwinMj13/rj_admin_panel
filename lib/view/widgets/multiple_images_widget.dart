@@ -9,6 +9,7 @@ import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
 import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:provider/provider.dart';
 
+import '../../config/color.dart';
 import '../../utils/constants.dart';
 
 class MultipleImagesWidget extends StatelessWidget {
@@ -33,9 +34,9 @@ class MultipleImagesWidget extends StatelessWidget {
           ),
           child: value.imagesUrl == null || value.imagesUrl.isEmpty
               ? dummyList(context)
-              : Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  alignment: WrapAlignment.center,
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 5,
                   children: buildList(value.imagesUrl, context),
                 ),
@@ -76,10 +77,10 @@ class MultipleImagesWidget extends StatelessWidget {
         },
         child: Container(
           height: 80,
-          width: 40,
+          width: 60,
           padding: const EdgeInsets.all(1.0),
           decoration: BoxDecoration(
-              color: Colors.grey[100],
+              color: Colors.grey[200],
               borderRadius: BorderRadius.circular(5.0)),
           child: Column(
             children: [
@@ -135,8 +136,8 @@ class MultipleImagesWidget extends StatelessWidget {
     return ClipRRect(
         child: Image.network(
       file,
-      fit: BoxFit.cover,
-      scale: 5,
+          height: 55,
+          width: 55,
     ));
   }
 }

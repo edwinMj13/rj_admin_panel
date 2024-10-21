@@ -8,7 +8,7 @@ import '../../utils/text_controllers.dart';
 import '../filter_services.dart';
 
  class TextFieldActions{
-  static clearProductEditTextsUpdate(BuildContext context) {
+  static clearProductEditTextsUpdate() {
     productEDITDescriptionController.clear();
     productEDITSubCategoryController.clear();
     productEDITQuantityController.clear();
@@ -16,10 +16,10 @@ import '../filter_services.dart';
     productEDITPriceController.clear();
     productEDITNameController.clear();
     productEDITBrandController.clear();
-    context.read<PickImageProvider>().addToImages([]);
+    productEDITMrpController.clear();
     clearNotifiers();
   }
-  static clearTextsAdd(BuildContext context) {
+  static clearTextsAdd() {
     productDescriptionController.clear();
     productSubCategoryController.clear();
     productQuantityController.clear();
@@ -27,7 +27,7 @@ import '../filter_services.dart';
     productPriceController.clear();
     productNameController.clear();
     productBrandController.clear();
-    context.read<PickImageProvider>().addToImages([]);
+    productMrpController.clear();
     clearNotifiers();
   }
  static clearNotifiers(){
@@ -37,12 +37,13 @@ import '../filter_services.dart';
   }
 
   static setValuesToFields(ProductModel? model) {
-    productDescriptionController.text = model!.description;
+    productEDITDescriptionController.text = model!.description;
     FilterServices.subCategoryNotifier.value = model.subCategory!;
-    productQuantityController.text = model.stock;
-    productSellingPriceController.text = model.sellingPrize;
-    productPriceController.text = model.price;
-    productNameController.text = model.itemName;
+    productEDITQuantityController.text = model.stock;
+    productEDITSellingPriceController.text = model.sellingPrize;
+    productEDITPriceController.text = model.price;
+    productEDITNameController.text = model.itemName;
+    productEDITMrpController.text = model.itemMrp;
     FilterServices.brandNotifier.value = model.itemBrand;
     FilterServices.categoryNotifier.value = model.category;
   }
@@ -50,5 +51,13 @@ import '../filter_services.dart';
   static clearBrandTextADDUpdate(){
     popupEDITBrandNameController.clear();
     popupBrandNameController.clear();
+  }
+
+  static clearOfferTexts(){
+    appDataProductLastAmountController.clear();
+    appDataProductOfferPercentController.clear();
+    appDataProductSalePriceController.clear();
+    appDataProductMrpController.clear();
+    appDataProductSearchController.clear();
   }
 }

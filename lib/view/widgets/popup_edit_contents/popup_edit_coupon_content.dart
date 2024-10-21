@@ -6,6 +6,7 @@ import 'package:project_rj_admin_panel/view/providers/coupon_provider.dart';
 import 'package:project_rj_admin_panel/view/widgets/simple_text_label.dart';
 import 'package:provider/provider.dart';
 
+import '../../../config/color.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/text_controllers.dart';
 import '../custom_elevated_button.dart';

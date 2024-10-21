@@ -3,6 +3,7 @@ import 'package:project_rj_admin_panel/data/models/order_model.dart';
 import 'package:project_rj_admin_panel/view/pages/order_list_screen/widgets/order_details_list_items_widget.dart';
 import 'package:project_rj_admin_panel/view/pages/order_list_screen/widgets/order_summary_widget.dart';
 
+import '../../../../config/color.dart';
 import '../../../../config/styles.dart';
 import '../../../../utils/constants.dart';
 

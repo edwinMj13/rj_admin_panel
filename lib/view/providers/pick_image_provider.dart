@@ -96,7 +96,7 @@ class PickImageProvider extends ChangeNotifier {
   }
 
   addToImages(List<dynamic> images){
-    _imagesUrl=getImageListFromDynamic(images);
+    _imagesUrl= images.isNotEmpty ?getImageListFromDynamic(images) : [];
   }
 
 }

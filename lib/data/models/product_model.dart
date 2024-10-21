@@ -4,7 +4,6 @@ import 'package:project_rj_admin_panel/data/models/storage_image_model.dart';
 class ProductModel {
 
   final String firebaseNodeId;
- // final String image;
   final String itemName;
   final String itemBrand;
   final String category;
@@ -12,10 +11,13 @@ class ProductModel {
   final String price;
   final String itemMrp;
   final String sellingPrize;
+  final String offerPercent;
+  final String offerAmount;
   final String stock;
   final String status;
   final String description;
   final String productId;
+  final String itemAddedDate;
   final String? mainImage;
   final List<dynamic> imagesList;
 
@@ -25,6 +27,7 @@ class ProductModel {
     required this.itemName,
     required this.category,
     required this.itemBrand,
+    required this.itemAddedDate,
     this.subCategory,
     required this.itemMrp,
     required this.price,
@@ -32,6 +35,8 @@ class ProductModel {
     required this.productId,
     this.mainImage,
     required this.stock,
+    required this.offerPercent,
+    required this.offerAmount,
      required this.status,
     required this.description,
   });
@@ -46,6 +51,9 @@ class ProductModel {
       "price":price,
       "itemMrp":itemMrp,
       "sellingPrize":sellingPrize,
+      "itemAddedDate":itemAddedDate,
+      "offerPercent":offerPercent,
+      "offerAmount":offerAmount,
       "mainImage":mainImage,
       "status":status,
       "itemBrand":itemBrand,

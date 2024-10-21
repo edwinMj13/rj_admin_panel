@@ -13,6 +13,7 @@ import 'package:project_rj_admin_panel/view/widgets/simple_icon_widget.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../../../config/color.dart';
 import '../data_table_image_widget.dart';
 import '../list_items_title_widget.dart';
 

@@ -41,3 +41,10 @@ final popupDiscountController = TextEditingController();
 final popupEDITCampaignNameController = TextEditingController();
 final popupEDITCodeController = TextEditingController();
 final popupEDITDiscountController = TextEditingController();
+
+
+final appDataProductSearchController = TextEditingController();
+final appDataProductMrpController = TextEditingController();
+final appDataProductSalePriceController = TextEditingController();
+final appDataProductOfferPercentController = TextEditingController();
+final appDataProductLastAmountController = TextEditingController();

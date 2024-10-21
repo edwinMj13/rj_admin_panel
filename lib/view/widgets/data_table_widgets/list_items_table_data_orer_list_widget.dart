@@ -16,6 +16,7 @@ import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../../../config/color.dart';
 import '../../../data/models/order_cart_purchase_model.dart';
 import '../../pages/order_list_screen/widgets/circle_stack_images_widget.dart';
 import '../data_table_image_widget.dart';

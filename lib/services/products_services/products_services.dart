@@ -44,6 +44,7 @@ class ProductServices {
 
   checkAndAdd(BuildContext context) async {
     // print("QWERTYHGFDS${context.read<CommonProvider>().selectedBrand!}");
+    final now = DateTime.now();
     if (validateProductAdd()) {
       if (context.read<PickImageProvider>().imagesUrl.length >= 2) {
         commonServices.loadingDialogShow(context);
@@ -52,7 +53,10 @@ class ProductServices {
           imagesList: context.read<PickImageProvider>().imagesUrl,
           firebaseNodeId: "",
           itemMrp: productMrpController.text,
+          offerPercent:"",
+          offerAmount:"",
           productId: "",
+          itemAddedDate: "${now.day}-${now.month}-${now.year}",
           mainImage: context.read<PickImageProvider>().imagesUrl[0].downloadUrl,
           //image: "image",
           itemName: productNameController.text,
@@ -74,16 +78,15 @@ class ProductServices {
   }
 
   checkAndUpdate(BuildContext context, ProductModel? model) async {
-    commonServices.loadingDialogShow(context);
-
     int imageLength = context.read<PickImageProvider>().imagesUrl.length;
-    if (validateProductUpdate() && imageLength >= 2 && imageLength <= 6) {
-      print("validateProductUpdate() && imageLength >= 2 && imageLength <= 6");
-      print("New FIles Added");
+    print("validateProductUpdate() && $imageLength >= 2 && $imageLength <= 6");
 
+    if (validateProductUpdate() && imageLength >= 2 && imageLength <= 6) {
+      print("New FIles Added");
+      commonServices.loadingDialogShow(context);
       modelUpdate(context.read<PickImageProvider>().imagesUrl, model!, context);
     } else {
-      showSnackbar(context, "Select exact no. of images");
+      showSnackbar(context, "Enter Every Fields");
     }
   }
 
@@ -94,17 +97,20 @@ class ProductServices {
       firebaseNodeId: model.firebaseNodeId,
       itemMrp: productEDITMrpController.text,
       productId: model.firebaseNodeId,
+      itemAddedDate: model.itemAddedDate,
       mainImage: addData[0].downloadUrl,
       //image: "image",
-      itemName: productNameController.text,
+      itemName: productEDITNameController.text,
+      offerAmount: model.offerAmount,
+      offerPercent: model.offerPercent,
       category: FilterServices.categoryNotifier.value,
       itemBrand: FilterServices.brandNotifier.value,
-      price: productPriceController.text,
-      sellingPrize: productSellingPriceController.text,
-      stock: productQuantityController.text,
+      price: productEDITPriceController.text,
+      sellingPrize: productEDITSellingPriceController.text,
+      stock: productEDITQuantityController.text,
       status: model.status,
       subCategory: FilterServices.subCategoryNotifier.value,
-      description: productDescriptionController.text,
+      description: productEDITDescriptionController.text,
     );
     await context
         .read<ProductsProvider>()
@@ -113,20 +119,24 @@ class ProductServices {
 
   actionAfterAddUpdate(BuildContext context) {
     commonServices.cancelLoading();
-    TextFieldActions.clearProductEditTextsUpdate(context);
+    TextFieldActions.clearProductEditTextsUpdate();
+    TextFieldActions.clearTextsAdd();
     refresh(context);
   }
 
   cancelPopup(BuildContext context) {
     Navigator.of(context).pop();
+    TextFieldActions.clearProductEditTextsUpdate();
+    TextFieldActions.clearTextsAdd();
     context.read<PickImageProvider>().fileSetToNull();
-    TextFieldActions.clearProductEditTextsUpdate(context);
-    TextFieldActions.clearTextsAdd(context);
+    context.read<PickImageProvider>().addToImages([]);
+    context.read<ProductsProvider>().getProductsDataProvider();
   }
 
   void refresh(BuildContext context) {
-    cancelPopup(context);
+    Navigator.of(context).pop();
     context.read<PickImageProvider>().fileSetToNull();
+    context.read<PickImageProvider>().addToImages([]);
     context.read<ProductsProvider>().getProductsDataProvider();
   }
 
@@ -139,4 +149,10 @@ class ProductServices {
         .read<ProductsProvider>()
         .updateProductData(model, model.firebaseNodeId, () => refresh(context));
   }
+
+  searchingForProduct(String label){
+    ProductsProvider productsProvider = ProductsProvider();
+    productsProvider.getProductsDataProvider();
+  }
+
 }

@@ -14,6 +14,7 @@ import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:project_rj_admin_panel/view/widgets/text_limited_hundred_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../../../config/color.dart';
 import '../../../utils/common_methods.dart';
 import '../../providers/home_provider.dart';
 import '../data_table_image_widget.dart';

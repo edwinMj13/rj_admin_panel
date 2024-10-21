@@ -16,6 +16,7 @@ import 'package:project_rj_admin_panel/repository/common.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../../../config/color.dart';
 import '../../../data/models/storage_image_model.dart';
 import '../../../utils/text_controllers.dart';
 import '../alternative_like_dropdown_but_popup.dart';
@@ -80,7 +81,7 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
       child: Column(
         children: [
           SimpleTextLabel(
-            controller: productNameController,
+            controller: productEDITNameController,
             labelText: "Product Name",
             errorLabel: "Enter Product Name",
           ),
@@ -196,7 +197,7 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
         sizedWidth10,
         Expanded(
           child: SimpleTextLabel(
-            controller: productPriceController,
+            controller: productEDITPriceController,
             labelText: "Price",
             errorLabel: "Enter Price",
           ),
@@ -204,14 +205,14 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
         sizedWidth10,
         Expanded(
             child: SimpleTextLabel(
-              controller: productSellingPriceController,
+              controller: productEDITSellingPriceController,
               labelText: "Selling Price",
               errorLabel: "Enter Selling Price",
             )),
         sizedWidth10,
         Expanded(
           child: SimpleTextLabel(
-            controller: productQuantityController,
+            controller: productEDITQuantityController,
             labelText: "Quantity",
             errorLabel: "Enter Quantity",
           ),
@@ -241,7 +242,7 @@ class _PopupEDITProductContentState extends State<PopupEDITProductContent> {
                         expands: true,
                         minLines: null,
                         maxLines: null,
-                        controller: productDescriptionController,
+                        controller: productEDITDescriptionController,
                         keyboardType: TextInputType.multiline,
                         decoration: const InputDecoration(
                           border: InputBorder.none,

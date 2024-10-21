@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/data/raw%20data/summary_card_data.dart';
+import 'package:project_rj_admin_panel/services/graph_summary_services.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
 
 class SummaryCardWidget extends StatelessWidget {
@@ -9,38 +10,42 @@ class SummaryCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size=MediaQuery.of(context).size;
-    return Row(
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return ValueListenableBuilder(
+      valueListenable: GraphSummaryServices.summaryNotifier,
+      builder: (context,value,_) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            customSummaryCard(size,0, summaryCardData),
-            sizedHeight20,
-            customSummaryCard(size,2, summaryCardData),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customSummaryCard(0, summaryCardData,value.totalOrder),
+                sizedHeight20,
+                customSummaryCard(2, summaryCardData,value.pendingOrder),
+              ],
+            ),
+            sizedWidth20,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customSummaryCard(1, summaryCardData,value.processingOrder),
+                sizedHeight20,
+                customSummaryCard(3, summaryCardData,value.completedOrder),
+              ],
+            ),
           ],
-        ),
-        sizedWidth20,
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            customSummaryCard(size,1, summaryCardData),
-            sizedHeight20,
-            customSummaryCard(size,3, summaryCardData),
-          ],
-        ),
-      ],
+        );
+      }
     );
   }
 
-  Widget customSummaryCard(Size size,int index, SummaryCardData summaryCardData) {
-    print("SIZE width  - ${size.width}"
-        "SIZE height  - ${size.height}");
+  Widget customSummaryCard(int index, SummaryCardData summaryCardData, String data) {
+
     return Container(
       height: 100,
-      width: 240,
+      width: 250,
       padding: EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
@@ -73,7 +78,7 @@ class SummaryCardWidget extends StatelessWidget {
                 style: const TextStyle(fontSize: 15, color: Colors.black),
               ),
               Text(
-                summaryCardData.summaryCard[index].data.toString(),
+                data,
                 style: const TextStyle(fontSize: 13, color: Colors.grey),
               ),
             ],

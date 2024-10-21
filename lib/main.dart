@@ -2,10 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project_rj_admin_panel/firebase_options.dart';
 import 'package:project_rj_admin_panel/view/pages/home_screen.dart';
+import 'package:project_rj_admin_panel/view/providers/app_data_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/category_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/common_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/coupon_provider.dart';
+import 'package:project_rj_admin_panel/view/providers/graph_summary_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/home_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/order_list_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
@@ -14,6 +16,8 @@ import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'config/color.dart';
 
 void main() async{
 
@@ -39,10 +43,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create:(context) =>ProductsProvider()),
         ChangeNotifierProvider(create:(context) =>CommonProvider()),
         ChangeNotifierProvider(create:(context) =>OrderListProvider()),
+        ChangeNotifierProvider(create:(context) =>AppDataProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Rj Admin Panel',
         theme: ThemeData(
             scaffoldBackgroundColor: secondaryColor,
             brightness: Brightness.light
