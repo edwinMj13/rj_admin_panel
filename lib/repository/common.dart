@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:project_rj_admin_panel/data/models/banner_model.dart';
 import 'package:project_rj_admin_panel/data/models/brand_model.dart';
 import 'package:project_rj_admin_panel/data/models/storage_image_model.dart';
+import 'package:project_rj_admin_panel/utils/common_methods.dart';
 
 Future<StorageImageModel> getFirebaseStorageImageUrl(Uint8List? image,String refName) async {
   var imageName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -62,9 +63,11 @@ saveBannerImages(BannerModel bannerModel) async {
   // }
 }
 
-Future<BannerModel> getBannerImages() async {
+Future<List<StorageImageModel>> getBannerImages() async {
   final data = await FirebaseFirestore.instance.collection('Banner').doc("Details").get();
   final dataMap = data.data();
   final lastData = BannerModel(bannerImages: dataMap!["bannerImages"],nodeId:dataMap["nodeId"]);
-  return lastData;
+  final modelList = getImageListFromDynamic(lastData.bannerImages);
+  print("lastData $dataMap");
+  return modelList;
 }

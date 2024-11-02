@@ -6,8 +6,8 @@ import 'package:project_rj_admin_panel/utils/constants.dart';
 class SummaryCardWidget extends StatelessWidget {
   final summaryCardData = SummaryCardData();
 
-  SummaryCardWidget({super.key});
-
+  SummaryCardWidget({super.key,required this.height,required this.width});
+final double height,width;
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -44,9 +44,9 @@ class SummaryCardWidget extends StatelessWidget {
   Widget customSummaryCard(int index, SummaryCardData summaryCardData, String data) {
 
     return Container(
-      height: 100,
-      width: 250,
-      padding: EdgeInsets.all(10.0),
+      height: height,
+      width: width,
+      padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         color: Colors.white,
@@ -66,7 +66,7 @@ class SummaryCardWidget extends StatelessWidget {
               color: summaryCardData.summaryCard[index].color,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Column(

@@ -37,7 +37,6 @@ class MultipleImagesWidget extends StatelessWidget {
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 5,
                   children: buildList(value.imagesUrl, context),
                 ),
         );

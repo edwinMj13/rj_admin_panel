@@ -10,6 +10,7 @@ class SideBarData{
     SideBarModel(title: 'Coupon Code', icon: Icons.code),
     SideBarModel(title: 'Orders', icon: Icons.list),
     SideBarModel(title: 'App Data', icon: Icons.margin),
+    SideBarModel(title: 'Users', icon: Icons.person),
     SideBarModel(title: 'Settings', icon: Icons.settings),
   ];
 }

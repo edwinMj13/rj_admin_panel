@@ -9,19 +9,21 @@ import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
 import 'package:provider/provider.dart';
 
 class BannerProvider extends ChangeNotifier {
-  BannerModel? _model;
+  List<StorageImageModel> _imageList = [];
+  List<StorageImageModel> get imageList => _imageList;
 
-  BannerModel? get bannerModel => _model;
 
   addBannerDetails(BuildContext context,List<StorageImageModel> imageList) async {
     final imageListBanner = BannerModel(bannerImages: imageList,nodeId:"");
     saveBannerImages(imageListBanner);
+    context.read<PickImageProvider>().bannerImagesSetToNull();
   }
 
   getBannerProvider(BuildContext context) async {
-    _model = await getBannerImages();
-    print("_Model $_model");
-    context.read<PickImageProvider>().addToImages(_model!.bannerImages);
-    notifyListeners();
+    _imageList = await getBannerImages();
+    context.read<PickImageProvider>().getBannerImagesToShow(_imageList);
+    print("_Model $_imageList");
+    /*print("_Model $_imageList");
+    context.read<PickImageProvider>().addToImages(_imageList);*/
   }
 }

@@ -15,24 +15,31 @@ import '../../repository/database_services_brand.dart';
 
 class PickImageProvider extends ChangeNotifier {
   PlatformFile? _file;
+
   PlatformFile? get imageFile => _file;
 
   List<StorageImageModel> _imagesUrl = [];
+
   List<StorageImageModel> get imagesUrl => _imagesUrl;
 
   List<Uint8List> multiple_Files = [];
 
-  bool _imageLoading=false;
-  bool get imageLoading=>_imageLoading;
+  List<Uint8List> multiple_FilesForBanner = [];
+  List<StorageImageModel> _imagesUrlBanner = [];
+
+  List<StorageImageModel> get imagesUrlBanner => _imagesUrlBanner;
+
+  bool _imageLoading = false;
+
+  bool get imageLoading => _imageLoading;
 
   CommonServices commonServices = CommonServices();
 
   //List<PlatformFile>?  get multiple_Files=>_multiple_Files;
 
-  List<Uint8List> bannerImages =[];
+  List<Uint8List> bannerImages = [];
 
-  List<String>? _bannerShowImages =[];
-  List<String>? get bannerShowImages => _bannerShowImages;
+  ValueNotifier<List<StorageImageModel>> bannerShowImages = ValueNotifier([]);
 
   Future<void> pickImage(String tag, VoidCallback callBack) async {
     try {
@@ -55,11 +62,15 @@ class PickImageProvider extends ChangeNotifier {
     _file = null;
   }
 
-  getBannerImagesToShow(List<String> images){
-    _bannerShowImages = images;
+  bannerImagesSetToNull() {
+    _file = null;
+    _imagesUrlBanner.clear();
+    multiple_FilesForBanner.clear();
   }
 
-  Future<void> pickMultipleImages(String tag, VoidCallback callBack,BuildContext context) async {
+  Future<void> pickMultipleImages(
+      String tag, VoidCallback callBack, BuildContext context,
+      {String defaults = "other"}) async {
     try {
       FilePickerResult? result =
           await FilePicker.platform.pickFiles(allowMultiple: true);
@@ -71,13 +82,13 @@ class PickImageProvider extends ChangeNotifier {
             callBack();
           }
         }
-        _imageLoading=true;
+        _imageLoading = true;
         commonServices.loadingDialogShow(context);
-        await _addImages(tag).then((_){
-          _imageLoading=false;
-          commonServices.cancelLoading();
-        });
-        //print("result.files ${result.files ?? "ergf"}");
+          await _addImages(tag, defaults).then((_) {
+            _imageLoading = false;
+            commonServices.cancelLoading();
+            multiple_Files.clear();
+          });
       }
     } catch (e) {
       print("Pick Multiple Image Exception ${e.toString()}");
@@ -85,7 +96,7 @@ class PickImageProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _addImages(String tag) async {
+  Future<void> _addImages(String tag, String defaults) async {
     if (tag == "update") {
       _imagesUrl.addAll(await getFirebaseStorageMULTIPLEImageUrl(
         multiple_Files,
@@ -99,14 +110,68 @@ class PickImageProvider extends ChangeNotifier {
     }
   }
 
+
+  Future<void> pickMultipleImagesForBanner( VoidCallback callBack, BuildContext context,String defaults) async {
+    try {
+      FilePickerResult? result =
+      await FilePicker.platform.pickFiles(allowMultiple: true);
+      if (result != null) {
+        for (int i = 0; i < result.files.length; i++) {
+          if (multiple_FilesForBanner.length < 6) {
+            multiple_FilesForBanner.add(result.files[i].bytes!);
+          } else {
+            callBack();
+          }
+        }
+        _imageLoading = true;
+        commonServices.loadingDialogShow(context);
+        await _addImagesBannerFromMulti( defaults).then((_) {
+          _imageLoading = false;
+          commonServices.cancelLoading();
+          multiple_FilesForBanner.clear();
+        });
+
+      }
+    } catch (e) {
+      print("Pick Multiple Image Exception ${e.toString()}");
+    }
+    notifyListeners();
+  }
+
+
+  Future<void> _addImagesBannerFromMulti(String defaults) async {
+    print("Banner Status$defaults");
+    if (defaults == "banner_a") {
+      _imagesUrlBanner = await getFirebaseStorageMULTIPLEImageUrl(
+        multiple_FilesForBanner,
+        productName: productNameController.text,
+      );
+    } else if (defaults == "banner_u") {
+      _imagesUrlBanner.addAll(await getFirebaseStorageMULTIPLEImageUrl(
+        multiple_FilesForBanner,
+        productName: productEDITNameController.text,
+      ));
+    }
+    print("bannerShowImages ${_imagesUrlBanner}");
+  }
+
   deleteImageFromMultiple(int index) {
     _imagesUrl.removeAt(index);
     notifyListeners();
   }
 
-  addToImages(List<dynamic> images){
-    _imagesUrl= images.isNotEmpty ?getImageListFromDynamic(images) : [];
-    print("_imageURL $_imagesUrl");
+  deleteImageFromMultipleBanner(int index) {
+    _imagesUrlBanner.removeAt(index);
+    notifyListeners();
   }
 
+  addToImages(List<dynamic> images) {
+    _imagesUrl = images.isNotEmpty ? getImageListFromDynamic(images) : [];
+    print("_imageURL $images");
+  }
+
+  getBannerImagesToShow(List<StorageImageModel> images) {
+    _imagesUrlBanner = images;
+    notifyListeners();
+  }
 }

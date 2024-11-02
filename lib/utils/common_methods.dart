@@ -59,6 +59,7 @@ showSnackbar(BuildContext context,String title){
 
 
 List<StorageImageModel> getImageListFromDynamic(List<dynamic> images) {
+  print("dynamic $images");
   return images
       .map((e) => StorageImageModel(
     storageRefPath: e["storageRefPath"],

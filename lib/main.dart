@@ -16,6 +16,7 @@ import 'package:project_rj_admin_panel/view/providers/products_provider.dart';
 import 'package:project_rj_admin_panel/utils/constants.dart';
 import 'package:project_rj_admin_panel/view/providers/brand_provider.dart';
 import 'package:project_rj_admin_panel/view/providers/pick_image_provider.dart';
+import 'package:project_rj_admin_panel/view/providers/users_list_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'config/color.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create:(context) =>OrderListProvider()),
         ChangeNotifierProvider(create:(context) =>AppDataProvider()),
         ChangeNotifierProvider(create:(context) =>BannerProvider()),
+        ChangeNotifierProvider(create:(context) =>UsersListProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

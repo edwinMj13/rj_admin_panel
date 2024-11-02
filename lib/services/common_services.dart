@@ -35,5 +35,4 @@ class CommonServices {
     Navigator.of(loadingProgress!).pop();
   }
 
-
 }

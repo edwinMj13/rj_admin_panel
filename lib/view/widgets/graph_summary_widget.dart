@@ -70,29 +70,29 @@ class _GraphSummaryWidgetState extends State<GraphSummaryWidget> {
                               "bottomTitles parentAxisSize $value ${meta.parentAxisSize}\n"
                               "bottomTitles sideTitles $value ${meta.sideTitles}\n");*/
                           switch (value.toInt()) {
-                            case 0:
-                              return Text('JAN');
                             case 1:
-                              return Text('FEB');
+                              return Text('JAN');
                             case 2:
-                              return Text('MAR');
+                              return Text('FEB');
                             case 3:
-                              return Text('APR');
+                              return Text('MAR');
                             case 4:
-                              return Text('MAY');
+                              return Text('APR');
                             case 5:
-                              return Text('JUN');
+                              return Text('MAY');
                             case 6:
-                              return Text('JUL');
+                              return Text('JUN');
                             case 7:
-                              return Text('AUG');
+                              return Text('JUL');
                             case 8:
-                              return Text('SEP');
+                              return Text('AUG');
                             case 9:
-                              return Text('OCT');
+                              return Text('SEP');
                             case 10:
+                              return Text('OCT');
+                            case  11:
                               return Text('NOV');
-                            case 11:
+                            case  12:
                               return Text('DEC');
                             default:
                               return Text('');
@@ -101,26 +101,26 @@ class _GraphSummaryWidgetState extends State<GraphSummaryWidget> {
                       ),
                     ),
                   ),
-                  minX: 0,
-                  maxX: 11,
+                  minX: 1,
+                  maxX: 12,
                   minY: 0,
                   maxY: 50,
                   lineBarsData: [
                     LineChartBarData(
                       isCurved: true,
                       spots:  [
-                        FlSpot(0, double.parse(value.totalOrderInJan)),
-                        FlSpot(1, double.parse(value.totalOrderInFeb)),
-                        FlSpot(2, double.parse(value.totalOrderInMar)),
-                        FlSpot(3, double.parse(value.totalOrderInApr)),
-                        FlSpot(4, double.parse(value.totalOrderInMay)),
-                        FlSpot(5, double.parse(value.totalOrderInJun)),
-                        FlSpot(6, double.parse(value.totalOrderInJul)),
-                        FlSpot(7, double.parse(value.totalOrderInAug)),
-                        FlSpot(8, double.parse(value.totalOrderInSep)),
-                        FlSpot(9, double.parse(value.totalOrderInOct)),
-                        FlSpot(10, double.parse(value.totalOrderInNov)),
-                        FlSpot(11, double.parse(value.totalOrderInDec)),
+                        FlSpot(1, double.parse(value.totalOrderInJan)),
+                        FlSpot(2, double.parse(value.totalOrderInFeb)),
+                        FlSpot(3, double.parse(value.totalOrderInMar)),
+                        FlSpot(4, double.parse(value.totalOrderInApr)),
+                        FlSpot(5, double.parse(value.totalOrderInMay)),
+                        FlSpot(6, double.parse(value.totalOrderInJun)),
+                        FlSpot(7, double.parse(value.totalOrderInJul)),
+                        FlSpot(8, double.parse(value.totalOrderInAug)),
+                        FlSpot(9, double.parse(value.totalOrderInSep)),
+                        FlSpot(10, double.parse(value.totalOrderInOct)),
+                        FlSpot(11, double.parse(value.totalOrderInNov)),
+                        FlSpot(12, double.parse(value.totalOrderInDec)),
                       ],
                       belowBarData: BarAreaData(show: false),
                       color: Colors.blue,

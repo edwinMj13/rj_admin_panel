@@ -1,3 +1,20 @@
+buildscript {
+    ext {
+        // Specify the Android Gradle Plugin version and other versions
+        kotlin_version = '1.9.10' // Adjust if using Kotlin
+        gradle_plugin_version = '8.1.0'
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradle_plugin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // If using Kotlin
+        // Add other classpath dependencies if needed (e.g., Firebase)
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -6,10 +23,9 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(":app")
 }
 

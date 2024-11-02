@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_rj_admin_panel/data/models/product_model.dart';
+import 'package:project_rj_admin_panel/utils/common_methods.dart';
 import 'package:project_rj_admin_panel/view/pages/app_data_screen/widgets/add_banner_image_widget.dart';
 import 'package:project_rj_admin_panel/view/providers/app_data_provider.dart';
 import 'package:project_rj_admin_panel/services/products_services/products_services.dart';
@@ -9,7 +10,10 @@ import 'package:project_rj_admin_panel/view/providers/products_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../config/color.dart';
+import '../../../data/models/storage_image_model.dart';
 import '../../../utils/text_controllers.dart';
+import '../../providers/banner_provider.dart';
+import '../../providers/pick_image_provider.dart';
 import '../../widgets/title_content_name_widget.dart';
 
 class AppDataScreen extends StatefulWidget {
@@ -24,7 +28,7 @@ class _AppDataScreenState extends State<AppDataScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // appDataProductSearchController.addListener(_onsearchChanged);
+    context.read<BannerProvider>().getBannerProvider(context);
   }
 
   @override
@@ -37,7 +41,7 @@ class _AppDataScreenState extends State<AppDataScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _setOfferSection(),
-            AddBannerImageWidget(),
+            const AddBannerImageWidget()
           ],
         )
       ],
@@ -82,56 +86,57 @@ class _AppDataScreenState extends State<AppDataScreen> {
   OverlayEntry _createOverlayEntry() {
     // Find the position and size of the TextField
     final RenderBox renderBox =
-        _setOfferFormKey.currentContext!.findRenderObject() as RenderBox;
+    _setOfferFormKey.currentContext!.findRenderObject() as RenderBox;
     final Size size = renderBox.size;
     final Offset offset = renderBox.localToGlobal(Offset.zero);
 
     return OverlayEntry(
-      builder: (context) => Positioned(
-        left: offset.dx,
-        top: offset.dy + size.height, // Place it below the TextField
-        width: size.width,
-        child: Material(
-          elevation: 4.0,
-          child: Container(
-            constraints: const BoxConstraints(
-              maxHeight: 300, // Limit max height to allow scrolling
-            ),
-            child: ValueListenableBuilder(
-              valueListenable: AppDataProvider.filteredList,
-              builder: (context, value, _) {
-                return Scrollbar(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: value.length,
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          appDataProductSearchController.text =
-                              value[index].itemName;
-                          _removeOverlay(); // Close the overlay after selection
-                          appDataProductMrpController.text =
-                              value[index].itemMrp;
-                          appDataProductSalePriceController.text =
-                              value[index].sellingPrize;
-                          context
-                              .read<AppDataProvider>()
-                              .selectedProduct(value[index]);
+      builder: (context) =>
+          Positioned(
+            left: offset.dx,
+            top: offset.dy + size.height, // Place it below the TextField
+            width: size.width,
+            child: Material(
+              elevation: 4.0,
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxHeight: 300, // Limit max height to allow scrolling
+                ),
+                child: ValueListenableBuilder(
+                  valueListenable: AppDataProvider.filteredList,
+                  builder: (context, value, _) {
+                    return Scrollbar(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: value.length,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              appDataProductSearchController.text =
+                                  value[index].itemName;
+                              _removeOverlay(); // Close the overlay after selection
+                              appDataProductMrpController.text =
+                                  value[index].itemMrp;
+                              appDataProductSalePriceController.text =
+                                  value[index].sellingPrize;
+                              context
+                                  .read<AppDataProvider>()
+                                  .selectedProduct(value[index]);
+                            },
+                            child: Text(
+                              value[index].itemName,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          );
                         },
-                        child: Text(
-                          value[index].itemName,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
           ),
-        ),
-      ),
     );
   }
 
@@ -253,9 +258,9 @@ class _AppDataScreenState extends State<AppDataScreen> {
                     if (value.isNotEmpty &&
                         appDataProductSalePriceController.text.isNotEmpty) {
                       final lastAmt = int.parse(
-                              appDataProductSalePriceController.text) -
+                          appDataProductSalePriceController.text) -
                           (int.parse(appDataProductSalePriceController.text) /
-                                  100) *
+                              100) *
                               int.parse(value);
                       appDataProductLastAmountController.text =
                           lastAmt.toStringAsFixed(2);
@@ -302,7 +307,8 @@ class _AppDataScreenState extends State<AppDataScreen> {
           sizedHeight10,
           ElevatedButton(
               onPressed: () {
-                if(appDataProductOfferPercentController.text.isNotEmpty && appDataProductLastAmountController.text.isNotEmpty) {
+                if (appDataProductOfferPercentController.text.isNotEmpty &&
+                    appDataProductLastAmountController.text.isNotEmpty) {
                   context
                       .read<AppDataProvider>()
                       .updateProductDetailWithOffer(context);
